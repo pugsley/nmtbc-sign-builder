@@ -4,10 +4,15 @@ import nccLogo from './img/ncc.png'
 import koataLogo from './img/koata.png'
 import nmtbcLogo from './img/nmtbc.png'
 
-// Register Open Sans Bold font
+// Register Open Sans Bold Bold font
 Font.register({
-    family: 'Open Sans',
+    family: 'Open Sans Bold',
     src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-700.ttf',
+})
+
+Font.register({
+    family: 'Open Sans Semi-Bold',
+    src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf',
 })
 
 interface SignPDFProps {
@@ -70,6 +75,13 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         // border: '1px solid blue'
     },
+    middleSection: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        // border: '1px solid green'
+    },
     arrowCircle: {
         width: 315,
         height: 315,
@@ -88,7 +100,7 @@ const styles = StyleSheet.create({
         height: 100,
     },
     trailName: {
-        fontFamily: 'Open Sans',
+        fontFamily: 'Open Sans Bold',
         fontSize: 100,
         lineHeight: 1.1,
         color: '#FFFFFF',
@@ -101,16 +113,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     gradeText: {
-        fontFamily: 'Open Sans',
+        fontFamily: 'Open Sans Bold',
         fontSize: 50,
         color: '#FFFFFF',
         marginBottom: 40,
     },
     distanceText: {
-        fontFamily: 'Open Sans',
+        fontFamily: 'Open Sans Semi-Bold',
         fontSize: 40,
         color: '#FFFFFF',
-        marginBottom: 10,
     },
     icons: {
         display: 'flex',
@@ -119,32 +130,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     plusSign: {
-        fontFamily: 'Open Sans',
+        fontFamily: 'Open Sans Bold',
         fontSize: 60,
         color: '#FFFFFF',
         marginLeft: 10,
+    },
+    gradeSection: {
+        display: 'flex',
+        flexDirection: 'column',
     },
     bottomSection: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        // border: '1px solid yellow'
+        // border: '1px solid yellow',
+        marginTop: 50,
     },
     coordinates: {
         display: 'flex',
         flexDirection: 'column',
     },
     coordinateLabel: {
-        fontFamily: 'Open Sans',
+        fontFamily: 'Open Sans Semi-Bold',
         fontSize: 12,
         color: '#FFFFFF',
         marginBottom: -3,
-    },
-    coordinateText: {
-        fontFamily: 'Open Sans',
-        fontSize: 12,
-        color: '#FFFFFF',
     },
     logo: {
         width: 60,
@@ -254,25 +265,30 @@ export function SignPDF({signData}: SignPDFProps) {
                                 <Text style={styles.gradeText}>{signData.gradeNote}</Text>
                                 <Text style={styles.gradeText}>{signData.distance}</Text>
                             </View>
+                        </View>
 
-                            <View style={styles.icons}>
-                                {signData.bike && <Bike color="#FFFFFF" />}
-                                {signData.bike && signData.walk && <Text style={styles.plusSign}>+</Text>}
-                                {signData.walk && <Walker color="#FFFFFF" />}
+                        {/* Middle Section - flex container */}
+                        <View style={styles.middleSection}>
+                            {/* Icons and Distance - aligned to bottom of middle */}
+                            <View style={styles.gradeSection}>
+                                <View style={styles.icons}>
+                                    {signData.bike && <Bike color="#FFFFFF" />}
+                                    {signData.bike && signData.walk && <Text style={styles.plusSign}>+</Text>}
+                                    {signData.walk && <Walker color="#FFFFFF" />}
+                                </View>
+
+                                {/* Distance Type */}
+                                <Text style={styles.distanceText}>
+                                    {signData.distanceType}
+                                </Text>
                             </View>
-
-                            {/* Distance */}
-                            <Text style={styles.distanceText}>
-                                {signData.distanceType}
-                            </Text>
-
                         </View>
 
                         {/* Bottom Section */}
                         <View style={styles.bottomSection}>
                             <View style={styles.coordinates}>
                                 <Text style={styles.coordinateLabel}>
-                                    Location: {Math.abs(signData.latitude).toFixed(4)}° {signData.latitude >= 0 ? 'N' : 'S'}, {Math.abs(signData.longitude).toFixed(4)}° {signData.longitude >= 0 ? 'E' : 'W'}
+                                    Location{"\n"}<Text style={{ letterSpacing: 1.2 }}>{Math.abs(signData.latitude).toFixed(4)}° {signData.latitude >= 0 ? 'N' : 'S'}, {Math.abs(signData.longitude).toFixed(4)}° {signData.longitude >= 0 ? 'E' : 'W'}</Text>
                                 </Text>
                             </View>
                             <View style={styles.footerLogos}>
