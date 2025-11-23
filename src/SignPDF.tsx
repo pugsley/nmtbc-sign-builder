@@ -1,8 +1,5 @@
 import {Document, Page, View, Text, StyleSheet, Image, Font, Svg, Path} from '@react-pdf/renderer'
-import {SignData, WayfindingSignData, WarningPostData} from './App'
-import nccLogo from './img/ncc.png'
-import koataLogo from './img/koata.png'
-import nmtbcLogo from './img/nmtbc.png'
+import {SignData, WayfindingSignData, WarningPostData, LOGOS} from './App'
 
 const MM_TO_PT = 72 / 25.4;
 
@@ -321,9 +318,11 @@ function WayfindingSign({signData}: WayfindingSignProps) {
                                 </Text>
                             </View>
                             <View style={styles.footerLogos}>
-                                <Image src={nccLogo} style={styles.footerLogo}/>
-                                <Image src={koataLogo} style={styles.footerLogo}/>
-                                <Image src={nmtbcLogo} style={styles.footerLogo}/>
+                                {LOGOS.map(logo =>
+                                    signData.logoToggles[logo.id] && (
+                                        <Image key={logo.id} src={logo.image} style={styles.footerLogo}/>
+                                    )
+                                )}
                             </View>
                         </View>
                     </View>

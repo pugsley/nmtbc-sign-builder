@@ -3,6 +3,22 @@ import { PDFViewer, pdf } from '@react-pdf/renderer'
 import { SignForm } from './SignForm'
 import { SignPDF } from './SignPDF'
 import './App.css'
+import nccLogo from './img/ncc.png'
+import koataLogo from './img/koata.png'
+import nmtbcLogo from './img/nmtbc.png'
+
+// Logo Data Structure
+export interface LogoDefinition {
+  id: string
+  name: string
+  image: string
+}
+
+export const LOGOS: LogoDefinition[] = [
+  { id: 'ncc', name: 'NCC', image: nccLogo },
+  { id: 'koata', name: 'Koata', image: koataLogo },
+  { id: 'nmtbc', name: 'NMTBC', image: nmtbcLogo },
+]
 
 // Wayfinding Sign Data Structure
 export interface WayfindingSignData {
@@ -18,6 +34,7 @@ export interface WayfindingSignData {
   logo: string | null
   bike: boolean
   walk: boolean
+  logoToggles: Record<string, boolean>
 }
 
 // Warning Post Data Structure
@@ -47,6 +64,7 @@ export const defaultWayfindingData: WayfindingSignData = {
   logo: null,
   bike: true,
   walk: true,
+  logoToggles: Object.fromEntries(LOGOS.map(logo => [logo.id, true])),
 }
 
 export const defaultWarningPostData: WarningPostData = {

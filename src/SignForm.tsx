@@ -1,4 +1,4 @@
-import { SignData, defaultWayfindingData, defaultWarningPostData } from './App'
+import { SignData, defaultWayfindingData, defaultWarningPostData, LOGOS } from './App'
 import './SignForm.css'
 
 interface SignFormProps {
@@ -217,6 +217,25 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
             step="0.0001"
             placeholder="e.g., 174.7222"
           />
+        </div>
+      </div>
+
+      <div className="form-group">
+        <label>Footer Logos</label>
+        <div className="checkbox-group">
+          {LOGOS.map(logo => (
+            <label key={logo.id} className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={signData.logoToggles[logo.id] ?? true}
+                onChange={(e) => handleChange('logoToggles', {
+                  ...signData.logoToggles,
+                  [logo.id]: e.target.checked
+                })}
+              />
+              <span>{logo.name}</span>
+            </label>
+          ))}
         </div>
       </div>
         </>
