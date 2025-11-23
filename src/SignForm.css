@@ -32,7 +32,7 @@
 
 .form-group textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 98px;
 }
 
 .form-group input:focus,
@@ -48,18 +48,36 @@
   gap: 1rem;
 }
 
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-row-3 .form-group {
+  min-width: 0;
+}
+
+.trail-name-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: start;
+}
+
 .arrow-selector {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.25rem;
+  max-width: 120px;
 }
 
 .arrow-button {
-  padding: 0.625rem;
-  font-size: 0.875rem;
+  padding: 0.375rem;
+  font-size: 0.75rem;
   font-weight: 600;
   border: 2px solid #4a4a4a;
-  border-radius: 6px;
+  border-radius: 4px;
   background-color: #1a1a1a;
   color: #e5e5e5;
   cursor: pointer;
@@ -75,6 +93,14 @@
   border-color: #2563eb;
   background-color: #2563eb;
   color: white;
+}
+
+.arrow-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a4a4a;
+  font-size: 1rem;
 }
 
 .logo-preview {

@@ -1,4 +1,3 @@
-import { ChangeEvent } from 'react'
 import { SignData } from './App'
 import './SignForm.css'
 
@@ -12,63 +11,114 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
     onUpdate({ ...signData, [field]: value })
   }
 
-  const handleLogoUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (event) => {
-        const result = event.target?.result as string
-        handleChange('logo', result)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
-  const handleLogoRemove = () => {
-    handleChange('logo', null)
-  }
-
   return (
     <form className="sign-form">
-      <div className="form-group">
-        <label htmlFor="trailName">Trail Name</label>
-        <textarea
-          id="trailName"
-          value={signData.trailName}
-          onChange={(e) => handleChange('trailName', e.target.value)}
-          placeholder="e.g., Penny Farthing"
-          rows={3}
-        />
+      <div className="trail-name-row">
+        <div className="form-group">
+          <label htmlFor="trailName">Trail Name</label>
+          <textarea
+            id="trailName"
+            value={signData.trailName}
+            onChange={(e) => handleChange('trailName', e.target.value)}
+            placeholder="e.g., Penny Farthing"
+            rows={3}
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Arrow Direction</label>
+          <div className="arrow-selector">
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'NW' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'NW')}
+            >
+              NW
+            </button>
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'N' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'N')}
+            >
+              N
+            </button>
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'NE' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'NE')}
+            >
+              NE
+            </button>
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'W' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'W')}
+            >
+              W
+            </button>
+            <div className="arrow-center">
+              ⊕
+            </div>
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'E' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'E')}
+            >
+              E
+            </button>
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'SW' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'SW')}
+            >
+              SW
+            </button>
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'S' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'S')}
+            >
+              S
+            </button>
+            <button
+              type="button"
+              className={`arrow-button ${signData.arrowDirection === 'SE' ? 'active' : ''}`}
+              onClick={() => handleChange('arrowDirection', 'SE')}
+            >
+              SE
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div className="form-group">
-        <label htmlFor="grade">Grade Level</label>
-        <select
-          id="grade"
-          value={signData.grade}
-          onChange={(e) => handleChange('grade', Number(e.target.value) as SignData['grade'])}
-        >
-          <option value={1}>Grade 1</option>
-          <option value={2}>Grade 2</option>
-          <option value={3}>Grade 3</option>
-          <option value={4}>Grade 4</option>
-          <option value={5}>Grade 5</option>
-          <option value={6}>Grade 6</option>
-        </select>
-      </div>
+      <div className="form-row-3">
+        <div className="form-group">
+          <label htmlFor="grade">Grade Level</label>
+          <select
+            id="grade"
+            value={signData.grade}
+            onChange={(e) => handleChange('grade', Number(e.target.value) as SignData['grade'])}
+          >
+            <option value={1}>Grade 1</option>
+            <option value={2}>Grade 2</option>
+            <option value={3}>Grade 3</option>
+            <option value={4}>Grade 4</option>
+            <option value={5}>Grade 5</option>
+            <option value={6}>Grade 6</option>
+          </select>
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="gradeNote">Grade Note</label>
-        <input
-          type="text"
-          id="gradeNote"
-          value={signData.gradeNote}
-          onChange={(e) => handleChange('gradeNote', e.target.value)}
-          placeholder="e.g., Technical"
-        />
-      </div>
+        <div className="form-group">
+          <label htmlFor="gradeNote">Grade Note</label>
+          <input
+            type="text"
+            id="gradeNote"
+            value={signData.gradeNote}
+            onChange={(e) => handleChange('gradeNote', e.target.value)}
+            placeholder="e.g., Technical"
+          />
+        </div>
 
-      <div className="form-row">
         <div className="form-group">
           <label htmlFor="distance">Distance</label>
           <input
@@ -79,17 +129,39 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
             placeholder="e.g., 1.2 km"
           />
         </div>
+      </div>
 
-        <div className="form-group">
-          <label htmlFor="distanceType">Type</label>
-          <textarea
-            id="distanceType"
-            value={signData.distanceType}
-            onChange={(e) => handleChange('distanceType', e.target.value)}
-            placeholder="e.g., One Way"
-            rows={2}
-          />
+      <div className="form-group">
+        <label>Activity Icons</label>
+        <div className="checkbox-group">
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={signData.bike}
+              onChange={(e) => handleChange('bike', e.target.checked)}
+            />
+            <span>Bike</span>
+          </label>
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={signData.walk}
+              onChange={(e) => handleChange('walk', e.target.checked)}
+            />
+            <span>Walk</span>
+          </label>
         </div>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="distanceType">Activity Description</label>
+        <textarea
+          id="distanceType"
+          value={signData.distanceType}
+          onChange={(e) => handleChange('distanceType', e.target.value)}
+          placeholder="e.g., One Way"
+          rows={2}
+        />
       </div>
 
       <div className="form-row">
@@ -115,63 +187,6 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
             step="0.0001"
             placeholder="e.g., 174.7222"
           />
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label>Arrow Direction</label>
-        <div className="arrow-selector">
-          {(['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'] as const).map((direction) => (
-            <button
-              key={direction}
-              type="button"
-              className={`arrow-button ${signData.arrowDirection === direction ? 'active' : ''}`}
-              onClick={() => handleChange('arrowDirection', direction)}
-            >
-              {direction}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="logo">Logo</label>
-        {signData.logo ? (
-          <div className="logo-preview">
-            <img src={signData.logo} alt="Logo preview" />
-            <button type="button" onClick={handleLogoRemove} className="remove-logo">
-              Remove Logo
-            </button>
-          </div>
-        ) : (
-          <input
-            type="file"
-            id="logo"
-            accept="image/*"
-            onChange={handleLogoUpload}
-          />
-        )}
-      </div>
-
-      <div className="form-group">
-        <label>Activity Icons</label>
-        <div className="checkbox-group">
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={signData.bike}
-              onChange={(e) => handleChange('bike', e.target.checked)}
-            />
-            <span>Bike</span>
-          </label>
-          <label className="checkbox-label">
-            <input
-              type="checkbox"
-              checked={signData.walk}
-              onChange={(e) => handleChange('walk', e.target.checked)}
-            />
-            <span>Walk</span>
-          </label>
         </div>
       </div>
     </form>
