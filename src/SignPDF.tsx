@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     topSection: {
         display: 'flex',
         flexDirection: 'column',
-        border: '1px solid blue'
+        // border: '1px solid blue'
     },
     arrowCircle: {
         width: 315,
@@ -93,6 +93,12 @@ const styles = StyleSheet.create({
         lineHeight: 1.1,
         color: '#FFFFFF',
         marginBottom: 60,
+    },
+    gradeTextSection: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 30,
+        justifyContent: 'space-between',
     },
     gradeText: {
         fontFamily: 'Open Sans',
@@ -123,7 +129,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        border: '1px solid yellow'
+        // border: '1px solid yellow'
     },
     coordinates: {
         display: 'flex',
@@ -133,7 +139,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Open Sans',
         fontSize: 12,
         color: '#FFFFFF',
-        marginBottom: 2,
+        marginBottom: -3,
     },
     coordinateText: {
         fontFamily: 'Open Sans',
@@ -148,7 +154,7 @@ const styles = StyleSheet.create({
     footerLogos: {
         display: 'flex',
         flexDirection: 'row',
-        gap: 15,
+        gap: 30,
         alignItems: 'center',
     },
     footerLogo: {
@@ -243,18 +249,23 @@ export function SignPDF({signData}: SignPDFProps) {
                             <Text style={styles.trailName}>{signData.trailName}</Text>
 
                             {/* Grade */}
-                            <Text style={styles.gradeText}>Grade {signData.grade}     Technical</Text>
-
-                            {/* Distance */}
-                            <Text style={styles.distanceText}>
-                                {signData.distance} {signData.distanceType}
-                            </Text>
+                            <View style={styles.gradeTextSection}>
+                                <Text style={styles.gradeText}>Grade {signData.grade}</Text>
+                                <Text style={styles.gradeText}>{signData.gradeNote}</Text>
+                                <Text style={styles.gradeText}>{signData.distance}</Text>
+                            </View>
 
                             <View style={styles.icons}>
                                 {signData.bike && <Bike color="#FFFFFF" />}
                                 {signData.bike && signData.walk && <Text style={styles.plusSign}>+</Text>}
                                 {signData.walk && <Walker color="#FFFFFF" />}
                             </View>
+
+                            {/* Distance */}
+                            <Text style={styles.distanceText}>
+                                {signData.distanceType}
+                            </Text>
+
                         </View>
 
                         {/* Bottom Section */}

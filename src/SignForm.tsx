@@ -48,13 +48,24 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
           value={signData.grade}
           onChange={(e) => handleChange('grade', Number(e.target.value) as SignData['grade'])}
         >
-          <option value={1}>Grade 1 (Easiest)</option>
-          <option value={2}>Grade 2 (Easy)</option>
-          <option value={3}>Grade 3 (Moderate)</option>
-          <option value={4}>Grade 4 (Challenging)</option>
-          <option value={5}>Grade 5 (Difficult)</option>
-          <option value={6}>Grade 6 (Expert)</option>
+          <option value={1}>Grade 1</option>
+          <option value={2}>Grade 2</option>
+          <option value={3}>Grade 3</option>
+          <option value={4}>Grade 4</option>
+          <option value={5}>Grade 5</option>
+          <option value={6}>Grade 6</option>
         </select>
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="gradeNote">Grade Note</label>
+        <input
+          type="text"
+          id="gradeNote"
+          value={signData.gradeNote}
+          onChange={(e) => handleChange('gradeNote', e.target.value)}
+          placeholder="e.g., Technical"
+        />
       </div>
 
       <div className="form-row">
@@ -71,14 +82,13 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
 
         <div className="form-group">
           <label htmlFor="distanceType">Type</label>
-          <select
+          <textarea
             id="distanceType"
             value={signData.distanceType}
-            onChange={(e) => handleChange('distanceType', e.target.value as SignData['distanceType'])}
-          >
-            <option value="One Way">One Way</option>
-              <option value="Two Way">Two Way</option>
-          </select>
+            onChange={(e) => handleChange('distanceType', e.target.value)}
+            placeholder="e.g., One Way"
+            rows={2}
+          />
         </div>
       </div>
 
