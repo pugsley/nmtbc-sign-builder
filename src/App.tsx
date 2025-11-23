@@ -49,15 +49,15 @@ function App() {
         <h1>MTB Trail Sign Creator</h1>
         <p>Configure your trail sign below. Preview updates automatically.</p>
         <SignForm signData={signData} onUpdate={setSignData} />
+        <button className="download-button" onClick={handleDownload}>
+          Download PDF
+        </button>
       </div>
       <div className="preview-container">
         <h2>Preview</h2>
         <PDFViewer style={{ width: '100%', flex: 1, border: 'none', borderRadius: '8px' }}>
           <SignPDF signData={signData} />
         </PDFViewer>
-        <button className="download-button" onClick={handleDownload}>
-          Download PDF
-        </button>
       </div>
     </div>
   )

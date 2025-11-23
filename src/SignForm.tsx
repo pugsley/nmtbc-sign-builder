@@ -33,28 +33,28 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
               className={`arrow-button ${signData.arrowDirection === 'NW' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'NW')}
             >
-              NW
+              ↖
             </button>
             <button
               type="button"
               className={`arrow-button ${signData.arrowDirection === 'N' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'N')}
             >
-              N
+              ↑
             </button>
             <button
               type="button"
               className={`arrow-button ${signData.arrowDirection === 'NE' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'NE')}
             >
-              NE
+              ↗
             </button>
             <button
               type="button"
               className={`arrow-button ${signData.arrowDirection === 'W' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'W')}
             >
-              W
+              ←
             </button>
             <div className="arrow-center">
               ⊕
@@ -64,28 +64,28 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
               className={`arrow-button ${signData.arrowDirection === 'E' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'E')}
             >
-              E
+              →
             </button>
             <button
               type="button"
               className={`arrow-button ${signData.arrowDirection === 'SW' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'SW')}
             >
-              SW
+              ↙
             </button>
             <button
               type="button"
               className={`arrow-button ${signData.arrowDirection === 'S' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'S')}
             >
-              S
+              ↓
             </button>
             <button
               type="button"
               className={`arrow-button ${signData.arrowDirection === 'SE' ? 'active' : ''}`}
               onClick={() => handleChange('arrowDirection', 'SE')}
             >
-              SE
+              ↘
             </button>
           </div>
         </div>
