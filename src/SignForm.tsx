@@ -1,4 +1,4 @@
-import { SignData, WayfindingSignData, WarningPostData, defaultWayfindingData, defaultWarningPostData } from './App'
+import { SignData, defaultWayfindingData, defaultWarningPostData } from './App'
 import './SignForm.css'
 
 interface SignFormProps {

@@ -1,4 +1,4 @@
-import { PDFDocument, rgb, degrees } from 'pdf-lib'
+import { PDFDocument, rgb } from 'pdf-lib'
 import { SignData } from './App'
 
 export async function generateSignPDF(signData: SignData): Promise<Uint8Array> {

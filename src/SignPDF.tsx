@@ -47,8 +47,8 @@ const getGradeColor = (grade: number): string => {
     return colors[grade] || colors[3]
 }
 
-const getArrowRotation = (direction: SignData['arrowDirection']): number => {
-    const rotations: Record<SignData['arrowDirection'], number> = {
+const getArrowRotation = (direction: WayfindingSignData['arrowDirection']): number => {
+    const rotations: Record<WayfindingSignData['arrowDirection'], number> = {
         'N': 0,
         'NE': 45,
         'E': 90,
