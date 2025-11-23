@@ -82,7 +82,7 @@ function App() {
   return (
     <div className="app">
       <div className="form-container">
-        <h1>MTB Trail Sign Creator</h1>
+        <h1>NMTBC Trail Sign Creator</h1>
         <p>Configure your trail sign below. Preview updates automatically.</p>
         <SignForm signData={signData} onUpdate={setSignData} />
         <button className="download-button" onClick={handleDownload}>

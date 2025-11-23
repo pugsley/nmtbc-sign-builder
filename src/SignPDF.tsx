@@ -9,18 +9,18 @@ const MM_TO_PT = 72 / 25.4;
 // Register Open Sans Bold Bold font
 Font.register({
     family: 'Open Sans Bold',
-    src: '/fonts/open-sans-700.ttf',
+    src: `${import.meta.env.BASE_URL}fonts/open-sans-700.ttf`,
 })
 
 Font.register({
     family: 'Open Sans Semi-Bold',
-    src: '/fonts/open-sans-600.ttf',
+    src: `${import.meta.env.BASE_URL}fonts/open-sans-600.ttf`,
 })
 
 Font.register({
     family: 'Overpass Bold',
     //src: 'https://cdn.jsdelivr.net/npm/@fontsource/overpass@5.0.0/files/overpass-latin-700-normal.woff',
-    src: '/fonts/overpass-latin-700-normal.woff',
+    src: `${import.meta.env.BASE_URL}fonts/overpass-latin-700-normal.woff`,
 })
 
 interface SignPDFProps {
