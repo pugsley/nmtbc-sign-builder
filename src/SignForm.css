@@ -1,0 +1,157 @@
+.sign-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #e5e5e5;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 0.625rem;
+  font-size: 1rem;
+  border: 1px solid #4a4a4a;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: #e5e5e5;
+  transition: border-color 0.2s;
+  font-family: inherit;
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.arrow-selector {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.arrow-button {
+  padding: 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: 2px solid #4a4a4a;
+  border-radius: 6px;
+  background-color: #1a1a1a;
+  color: #e5e5e5;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.arrow-button:hover {
+  border-color: #2563eb;
+  background-color: #2a2a2a;
+}
+
+.arrow-button.active {
+  border-color: #2563eb;
+  background-color: #2563eb;
+  color: white;
+}
+
+.logo-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.logo-preview img {
+  max-width: 200px;
+  max-height: 100px;
+  object-fit: contain;
+  border: 1px solid #4a4a4a;
+  border-radius: 6px;
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.remove-logo {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #ef4444;
+  background-color: transparent;
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.remove-logo:hover {
+  background-color: #ef4444;
+  color: white;
+}
+
+input[type="file"] {
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+input[type="file"]::file-selector-button {
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #2563eb;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #1d4ed8;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #e5e5e5;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+.checkbox-label span {
+  user-select: none;
+}
