@@ -57,7 +57,7 @@ export const defaultWarningPostData: WarningPostData = {
 }
 
 function App() {
-  const [signData, setSignData] = useState<SignData>(defaultWarningPostData)
+  const [signData, setSignData] = useState<SignData>(defaultWayfindingData)
 
   const handleDownload = async () => {
     const blob = await pdf(<SignPDF signData={signData} />).toBlob()
