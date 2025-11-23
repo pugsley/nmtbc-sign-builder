@@ -1,22 +1,38 @@
 import {Document, Page, View, Text, StyleSheet, Image, Font, Svg, Path} from '@react-pdf/renderer'
-import {SignData} from './App'
+import {SignData, WayfindingSignData, WarningPostData} from './App'
 import nccLogo from './img/ncc.png'
 import koataLogo from './img/koata.png'
 import nmtbcLogo from './img/nmtbc.png'
 
+const MM_TO_PT = 72 / 25.4;
+
 // Register Open Sans Bold Bold font
 Font.register({
     family: 'Open Sans Bold',
-    src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-700.ttf',
+    src: '/fonts/open-sans-700.ttf',
 })
 
 Font.register({
     family: 'Open Sans Semi-Bold',
-    src: 'https://cdn.jsdelivr.net/npm/open-sans-all@0.1.3/fonts/open-sans-600.ttf',
+    src: '/fonts/open-sans-600.ttf',
+})
+
+Font.register({
+    family: 'Overpass Bold',
+    //src: 'https://cdn.jsdelivr.net/npm/@fontsource/overpass@5.0.0/files/overpass-latin-700-normal.woff',
+    src: '/fonts/overpass-latin-700-normal.woff',
 })
 
 interface SignPDFProps {
     signData: SignData
+}
+
+interface WayfindingSignProps {
+    signData: WayfindingSignData
+}
+
+interface WarningPostProps {
+    signData: WarningPostData
 }
 
 const getGradeColor = (grade: number): string => {
@@ -236,12 +252,25 @@ const Walker = ({color}: { color: string }) => (
     </Svg>
 )
 
+const Danger = ({color}: { color: string }) => (
+    <Svg viewBox="0 0 640 640"><Path fill={color} d="M320 64C334.7 64 348.2 72.1 355.2 85L571.2 485C577.9 497.4 577.6 512.4 570.4 524.5C563.2 536.6 550.1 544 536 544L104 544C89.9 544 76.8 536.6 69.6 524.5C62.4 512.4 62.1 497.4 68.8 485L284.8 85C291.8 72.1 305.3 64 320 64zM320 416C302.3 416 288 430.3 288 448C288 465.7 302.3 480 320 480C337.7 480 352 465.7 352 448C352 430.3 337.7 416 320 416zM320 224C301.8 224 287.3 239.5 288.6 257.7L296 361.7C296.9 374.2 307.4 384 319.9 384C332.5 384 342.9 374.3 343.8 361.7L351.2 257.7C352.5 239.5 338.1 224 319.8 224z"/></Svg>
+)
 
-export function SignPDF({signData}: SignPDFProps) {
+const Warning = ({color}: { color: string }) => (
+    <Svg viewBox="0 0 640 640">
+        {/* Diamond with exclamation mark cut out */}
+        <Path
+            fill={color}
+            fillRule="evenodd"
+            d="M81 279L279 81C289.9 70.1 304.6 64 320 64C335.4 64 350.1 70.1 361 81L559 279C569.9 289.9 576 304.6 576 320C576 335.4 569.9 350.1 559 361L361 559C350.1 569.9 335.4 576 320 576C304.6 576 289.9 569.9 279 559L81 361C70.1 350.1 64 335.4 64 320C64 304.6 70.1 289.9 81 279z M320 384C302.3 384 288 398.3 288 416C288 433.7 302.3 448 320 448C337.7 448 352 433.7 352 416C352 398.3 337.7 384 320 384z M320 192C301.8 192 287.3 207.5 288.6 225.7L296 329.7C296.9 342.2 307.4 352 319.9 352C332.5 352 342.9 342.3 343.8 329.7L351.2 225.7C352.5 207.5 338.1 192 319.8 192z"
+        />
+    </Svg>
+)
+
+// Wayfinding Sign Component
+function WayfindingSign({signData}: WayfindingSignProps) {
     const backgroundColor = getGradeColor(signData.grade)
     const arrowRotation = getArrowRotation(signData.arrowDirection)
-
-    const MM_TO_PT = 72 / 25.4;
 
     return (
         <Document>
@@ -302,4 +331,90 @@ export function SignPDF({signData}: SignPDFProps) {
             </Page>
         </Document>
     )
+}
+
+// Warning Post Component
+function WarningPost({signData}: WarningPostProps) {
+    const backgroundColor = signData.symbol === 'warning' ? '#ECBA42' : '#C63823'
+
+    return (
+        <Document key={signData.symbol}>
+            <Page size={[115 * MM_TO_PT, 900 * MM_TO_PT]} orientation="portrait" style={styles.page}>
+                <View style={styles.container}>
+                    <View style={[styles.background, {backgroundColor}]}/>
+                    <View style={{
+                        ...styles.content,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        paddingBottom: 100,
+                    }}>
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        }}>
+                            {signData.symbol === 'danger' ? (
+                                <View style={{ transform: 'scale(1.2)', marginBottom: 20 }}><Danger color="#FFFFFF" /></View>
+                            ) : (
+                                <View style={{ transform: 'scale(1.2)', marginBottom: 20 }}><Warning color="#FFFFFF" /></View>
+                            )}
+
+                            {/* Title */}
+                            {signData.title.split('').map((char, index) => (
+                                <Text key={index} style={{
+                                    fontFamily: 'Overpass Bold',
+                                    fontSize: 250,
+                                    color: '#FFFFFF',
+                                    textAlign: 'center',
+                                    lineHeight: 1,
+                                    marginBottom: 0,
+                                }}>
+                                    {char}
+                                </Text>
+                            ))}
+                        </View>
+
+                        {/* Grade Badge */}
+                        <View style={{
+                            position: 'absolute',
+                            top: 550 * MM_TO_PT,
+                        }}>
+                            <View style={{
+                                backgroundColor: getGradeColor(signData.grade),
+                                height: 115 * MM_TO_PT,
+                                width: 240 * MM_TO_PT,
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                borderLeft: '10px solid black',
+                                borderRight: '10px solid black',
+                                transform: 'rotate(90)'
+                            }}>
+                                <Text style={{
+                                    fontFamily: 'Overpass Bold',
+                                    fontSize: 120,
+                                    color: '#ffffff',
+                                    lineHeight: 1.1,
+                                }}>
+                                    GRADE {signData.grade}
+                                </Text>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Page>
+        </Document>
+    )
+}
+
+// Main SignPDF Component - Routes to appropriate sign type
+export function SignPDF({signData}: SignPDFProps) {
+    switch (signData.signType) {
+        case 'wayfinding':
+            return <WayfindingSign signData={signData} />
+        case 'warning':
+            return <WarningPost signData={signData} />
+        default:
+            return <WayfindingSign signData={signData} />
+    }
 }

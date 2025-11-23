@@ -4,7 +4,9 @@ import { SignForm } from './SignForm'
 import { SignPDF } from './SignPDF'
 import './App.css'
 
-export interface SignData {
+// Wayfinding Sign Data Structure
+export interface WayfindingSignData {
+  signType: 'wayfinding'
   trailName: string
   grade: 1 | 2 | 3 | 4 | 5 | 6
   gradeNote: string
@@ -18,27 +20,61 @@ export interface SignData {
   walk: boolean
 }
 
+// Warning Post Data Structure
+export interface WarningPostData {
+  signType: 'warning'
+  symbol: 'danger' | 'warning'
+  title: string
+  grade: 1 | 2 | 3 | 4 | 5 | 6
+}
+
+// Discriminated Union of all sign types
+export type SignData = WayfindingSignData | WarningPostData
+
+export type SignType = SignData['signType']
+
+// Default data for each sign type
+export const defaultWayfindingData: WayfindingSignData = {
+  signType: 'wayfinding',
+  trailName: 'Te Piki',
+  grade: 4,
+  gradeNote: 'Climb',
+  distance: '1.2 km',
+  distanceType: 'Uphill biking\nTwo way walking',
+  latitude: -41.2971,
+  longitude: 174.7222,
+  arrowDirection: 'N',
+  logo: null,
+  bike: true,
+  walk: true,
+}
+
+export const defaultWarningPostData: WarningPostData = {
+  signType: 'warning',
+  symbol: 'danger',
+  title: 'JUMP',
+  grade: 6,
+}
+
 function App() {
-  const [signData, setSignData] = useState<SignData>({
-    trailName: 'Te Ara\nWhakaheke',
-    grade: 5,
-    gradeNote: 'Tech',
-    distance: '1.4 km',
-    distanceType: 'Uphill biking\nTwo way walking',
-    latitude: -41.2971,
-    longitude: 174.7222,
-    arrowDirection: 'N',
-    logo: null,
-    bike: true,
-    walk: true,
-  })
+  const [signData, setSignData] = useState<SignData>(defaultWarningPostData)
 
   const handleDownload = async () => {
     const blob = await pdf(<SignPDF signData={signData} />).toBlob()
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `${signData.trailName.toLowerCase().replace(/\s+/g, '-')}-sign.pdf`
+
+    let filename = ''
+    if (signData.signType === 'wayfinding') {
+      const trailName = signData.trailName.toLowerCase().replace(/\s+/g, '-').replace(/\n/g, '-')
+      filename = `${trailName}-wayfinding-sign.pdf`
+    } else {
+      const title = signData.title.toLowerCase().replace(/\s+/g, '-')
+      filename = `${title}-warning-post.pdf`
+    }
+
+    link.download = filename
     link.click()
     URL.revokeObjectURL(url)
   }

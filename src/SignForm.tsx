@@ -1,4 +1,4 @@
-import { SignData } from './App'
+import { SignData, WayfindingSignData, WarningPostData, defaultWayfindingData, defaultWarningPostData } from './App'
 import './SignForm.css'
 
 interface SignFormProps {
@@ -6,28 +6,58 @@ interface SignFormProps {
   onUpdate: (data: SignData) => void
 }
 
+// Default data for sign type switching
+const getDefaultDataForType = (signType: 'wayfinding' | 'warning'): SignData => {
+  if (signType === 'wayfinding') {
+    return defaultWayfindingData
+  } else {
+    return defaultWarningPostData
+  }
+}
+
 export function SignForm({ signData, onUpdate }: SignFormProps) {
-  const handleChange = (field: keyof SignData, value: string | number) => {
-    onUpdate({ ...signData, [field]: value })
+  const handleSignTypeChange = (newType: 'wayfinding' | 'warning') => {
+    if (newType !== signData.signType) {
+      onUpdate(getDefaultDataForType(newType))
+    }
+  }
+
+  const handleChange = (field: string, value: any) => {
+    onUpdate({ ...signData, [field]: value } as SignData)
   }
 
   return (
     <form className="sign-form">
-      <div className="trail-name-row">
-        <div className="form-group">
-          <label htmlFor="trailName">Trail Name</label>
-          <textarea
-            id="trailName"
-            value={signData.trailName}
-            onChange={(e) => handleChange('trailName', e.target.value)}
-            placeholder="e.g., Penny Farthing"
-            rows={3}
-          />
-        </div>
+      <div className="form-group">
+        <label htmlFor="signType">Sign Type</label>
+        <select
+          id="signType"
+          value={signData.signType}
+          onChange={(e) => handleSignTypeChange(e.target.value as 'wayfinding' | 'warning')}
+        >
+          <option value="wayfinding">Wayfinding Sign</option>
+          <option value="warning">Warning Post</option>
+        </select>
+      </div>
 
-        <div className="form-group">
-          <label>Arrow Direction</label>
-          <div className="arrow-selector">
+      {/* Wayfinding Sign Fields */}
+      {signData.signType === 'wayfinding' && (
+        <>
+          <div className="trail-name-row">
+            <div className="form-group">
+              <label htmlFor="trailName">Trail Name</label>
+              <textarea
+                id="trailName"
+                value={signData.trailName}
+                onChange={(e) => handleChange('trailName', e.target.value)}
+                placeholder="e.g., Penny Farthing"
+                rows={3}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Arrow Direction</label>
+              <div className="arrow-selector">
             <button
               type="button"
               className={`arrow-button ${signData.arrowDirection === 'NW' ? 'active' : ''}`}
@@ -189,6 +219,52 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
           />
         </div>
       </div>
+        </>
+      )}
+
+      {/* Warning Post Fields */}
+      {signData.signType === 'warning' && (
+        <>
+          <div className="form-group">
+            <label htmlFor="symbol">Warning Symbol</label>
+            <select
+              id="symbol"
+              value={signData.symbol}
+              onChange={(e) => handleChange('symbol', e.target.value)}
+            >
+              <option value="danger">Danger (Triangle)</option>
+              <option value="warning">Warning (Diamond)</option>
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="title">Title (One Word)</label>
+            <input
+              type="text"
+              id="title"
+              value={signData.title}
+              onChange={(e) => handleChange('title', e.target.value)}
+              placeholder="e.g., DANGER, CAUTION, WARNING"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="grade">Grade Level</label>
+            <select
+              id="grade"
+              value={signData.grade}
+              onChange={(e) => handleChange('grade', Number(e.target.value))}
+            >
+              <option value={1}>Grade 1</option>
+              <option value={2}>Grade 2</option>
+              <option value={3}>Grade 3</option>
+              <option value={4}>Grade 4</option>
+              <option value={5}>Grade 5</option>
+              <option value={6}>Grade 6</option>
+            </select>
+          </div>
+        </>
+      )}
     </form>
   )
 }
