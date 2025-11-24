@@ -268,12 +268,13 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
           </div>
 
           <div className="form-group">
-            <label htmlFor="grade">Grade Level</label>
+            <label htmlFor="grade">Grade Level (Optional)</label>
             <select
               id="grade"
-              value={signData.grade}
-              onChange={(e) => handleChange('grade', Number(e.target.value))}
+              value={signData.grade ?? ''}
+              onChange={(e) => handleChange('grade', e.target.value === '' ? undefined : Number(e.target.value))}
             >
+              <option value="">No Grade</option>
               <option value={1}>Grade 1</option>
               <option value={2}>Grade 2</option>
               <option value={3}>Grade 3</option>

@@ -42,7 +42,7 @@ export interface WarningPostData {
   signType: 'warning'
   symbol: 'danger' | 'warning'
   title: string
-  grade: 1 | 2 | 3 | 4 | 5 | 6
+  grade?: 1 | 2 | 3 | 4 | 5 | 6
 }
 
 // Discriminated Union of all sign types

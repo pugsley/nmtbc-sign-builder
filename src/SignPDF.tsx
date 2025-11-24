@@ -374,31 +374,33 @@ function WarningPost({signData}: WarningPostProps) {
                         </View>
 
                         {/* Grade Badge */}
-                        <View style={{
-                            position: 'absolute',
-                            top: 550 * MM_TO_PT,
-                        }}>
+                        {signData.grade && (
                             <View style={{
-                                backgroundColor: getGradeColor(signData.grade),
-                                height: 115 * MM_TO_PT,
-                                width: 240 * MM_TO_PT,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderLeft: '10px solid black',
-                                borderRight: '10px solid black',
-                                transform: 'rotate(90)'
+                                position: 'absolute',
+                                top: 550 * MM_TO_PT,
                             }}>
-                                <Text style={{
-                                    fontFamily: 'Overpass Bold',
-                                    fontSize: 120,
-                                    color: '#ffffff',
-                                    lineHeight: 1.1,
+                                <View style={{
+                                    backgroundColor: getGradeColor(signData.grade),
+                                    height: 115 * MM_TO_PT,
+                                    width: 240 * MM_TO_PT,
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    borderLeft: '10px solid black',
+                                    borderRight: '10px solid black',
+                                    transform: 'rotate(90)'
                                 }}>
-                                    GRADE {signData.grade}
-                                </Text>
+                                    <Text style={{
+                                        fontFamily: 'Overpass Bold',
+                                        fontSize: 120,
+                                        color: '#ffffff',
+                                        lineHeight: 1.1,
+                                    }}>
+                                        GRADE {signData.grade}
+                                    </Text>
+                                </View>
                             </View>
-                        </View>
+                        )}
                     </View>
                 </View>
             </Page>
