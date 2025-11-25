@@ -353,9 +353,9 @@ function WarningPost({signData}: WarningPostProps) {
                             alignItems: 'center',
                         }}>
                             {signData.symbol === 'danger' ? (
-                                <View style={{ transform: 'scale(1.2)', marginBottom: 20 }}><Danger color="#FFFFFF" /></View>
+                                <View style={{ transform: 'scale(1.2)', marginBottom: 40 }}><Danger color="#FFFFFF" /></View>
                             ) : (
-                                <View style={{ transform: 'scale(1.2)', marginBottom: 20 }}><Warning color="#FFFFFF" /></View>
+                                <View style={{ transform: 'scale(1.2)', marginBottom: 40 }}><Warning color="#FFFFFF" /></View>
                             )}
 
                             {/* Title */}
