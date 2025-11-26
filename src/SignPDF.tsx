@@ -471,6 +471,15 @@ function HardEasyPost({signData}: HardEasyPostProps) {
                         </View>
                     </View>
 
+                    {/* Divider line when grades match */}
+                    {signData.topGrade === signData.bottomGrade && (
+                        <View style={{
+                            height: 10,
+                            backgroundColor: '#FFFFFF',
+                            width: '100%',
+                        }} />
+                    )}
+
                     {/* Bottom Section */}
                     <View style={{
                         height: '40%',
@@ -480,7 +489,7 @@ function HardEasyPost({signData}: HardEasyPostProps) {
                         alignItems: 'center',
                         paddingTop: 20,
                         paddingBottom: 20,
-                        marginTop: -1,
+                        marginTop: signData.topGrade === signData.bottomGrade ? 0 : -1,
                     }}>
                         {/* Bottom Arrow */}
                         <View style={{
