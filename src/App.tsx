@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { pdf } from '@react-pdf/renderer'
 import { SignForm } from './SignForm'
 import { SignPDF } from './SignPDF'
@@ -7,6 +7,8 @@ import './App.css'
 import nccLogo from './img/ncc.png'
 import koataLogo from './img/koata.png'
 import nmtbcLogo from './img/nmtbc.png'
+
+const STORAGE_KEY = 'nmtbc-sign-creator-state'
 
 // Logo Data Structure
 export interface LogoDefinition {
@@ -96,8 +98,79 @@ export const defaultHardEasyPostData: HardEasyPostData = {
   bottomGrade: 5,
 }
 
+// Storage structure to hold all three sign types
+interface StoredSignData {
+  wayfinding: WayfindingSignData
+  warning: WarningPostData
+  hardeasy: HardEasyPostData
+  activeType: SignType
+}
+
+const defaultStoredData: StoredSignData = {
+  wayfinding: defaultWayfindingData,
+  warning: defaultWarningPostData,
+  hardeasy: defaultHardEasyPostData,
+  activeType: 'wayfinding',
+}
+
+// Load all sign data from localStorage with validation
+const loadFromLocalStorage = (): StoredSignData | null => {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY)
+    if (!stored) return null
+
+    const parsed = JSON.parse(stored)
+
+    // Validate structure
+    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.activeType) {
+      return null
+    }
+
+    return parsed as StoredSignData
+  } catch (error) {
+    console.error('Error loading from localStorage:', error)
+    return null
+  }
+}
+
 function App() {
-  const [signData, setSignData] = useState<SignData>(defaultWayfindingData)
+  // Load all sign data from localStorage on mount, fallback to defaults
+  const [storedData, setStoredData] = useState<StoredSignData>(() => {
+    const loaded = loadFromLocalStorage()
+    return loaded || defaultStoredData
+  })
+
+  // Get the current sign data based on active type
+  const signData = storedData[storedData.activeType]
+
+  // Update handler that saves to the correct slot
+  const handleUpdate = (data: SignData) => {
+    setStoredData(prev => {
+      // If switching sign types, use stored data for that type (don't overwrite with defaults)
+      if (data.signType !== prev.activeType) {
+        return {
+          ...prev,
+          activeType: data.signType,
+        }
+      }
+
+      // Normal field update - save the data to the correct slot
+      return {
+        ...prev,
+        [data.signType]: data,
+        activeType: data.signType,
+      }
+    })
+  }
+
+  // Save all sign data to localStorage whenever it changes
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData))
+    } catch (error) {
+      console.error('Error saving to localStorage:', error)
+    }
+  }, [storedData])
 
   const handleDownload = async () => {
     const blob = await pdf(<SignPDF signData={signData} />).toBlob()
@@ -128,7 +201,7 @@ function App() {
       <div className="form-container">
         <h1>NMTBC Trail Sign Creator</h1>
         <p>Configure your trail sign below. Preview updates automatically.</p>
-        <SignForm signData={signData} onUpdate={setSignData} />
+        <SignForm signData={signData} onUpdate={handleUpdate} />
         <button className="download-button" onClick={handleDownload}>
           Download PDF
         </button>
