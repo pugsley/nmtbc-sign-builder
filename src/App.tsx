@@ -113,6 +113,39 @@ const defaultStoredData: StoredSignData = {
   activeType: 'wayfinding',
 }
 
+// Serialize storedData to URL parameter
+const serializeToUrl = (data: StoredSignData): string => {
+  try {
+    const json = JSON.stringify(data)
+    return encodeURIComponent(json)
+  } catch (error) {
+    console.error('Error encoding to URL:', error)
+    return ''
+  }
+}
+
+// Deserialize from URL parameter
+const deserializeFromUrl = (): StoredSignData | null => {
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const encoded = params.get('data')
+    if (!encoded) return null
+
+    const json = decodeURIComponent(encoded)
+    const parsed = JSON.parse(json)
+
+    // Validate structure
+    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.activeType) {
+      return null
+    }
+
+    return parsed as StoredSignData
+  } catch (error) {
+    console.error('Error decoding from URL:', error)
+    return null
+  }
+}
+
 // Load all sign data from localStorage with validation
 const loadFromLocalStorage = (): StoredSignData | null => {
   try {
@@ -133,11 +166,24 @@ const loadFromLocalStorage = (): StoredSignData | null => {
   }
 }
 
+// Load initial data with priority: URL > localStorage > defaults
+const loadInitialData = (): StoredSignData => {
+  // Try URL first
+  const urlData = deserializeFromUrl()
+  if (urlData) return urlData
+
+  // Then localStorage
+  const storedData = loadFromLocalStorage()
+  if (storedData) return storedData
+
+  // Finally defaults
+  return defaultStoredData
+}
+
 function App() {
-  // Load all sign data from localStorage on mount, fallback to defaults
+  // Load all sign data with priority: URL > localStorage > defaults
   const [storedData, setStoredData] = useState<StoredSignData>(() => {
-    const loaded = loadFromLocalStorage()
-    return loaded || defaultStoredData
+    return loadInitialData()
   })
 
   // Get the current sign data based on active type
@@ -163,12 +209,20 @@ function App() {
     })
   }
 
-  // Save all sign data to localStorage whenever it changes
+  // Save all sign data to localStorage and URL whenever it changes
   useEffect(() => {
     try {
+      // Save to localStorage
       localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData))
+
+      // Update URL with new data
+      const encoded = serializeToUrl(storedData)
+      if (encoded) {
+        const newUrl = `${window.location.pathname}?data=${encoded}`
+        window.history.replaceState({}, '', newUrl)
+      }
     } catch (error) {
-      console.error('Error saving to localStorage:', error)
+      console.error('Error saving to localStorage/URL:', error)
     }
   }, [storedData])
 
