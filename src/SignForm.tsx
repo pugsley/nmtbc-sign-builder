@@ -1,4 +1,4 @@
-import { SignData, defaultWayfindingData, defaultWarningPostData, LOGOS } from './App'
+import { SignData, defaultWayfindingData, defaultWarningPostData, defaultHardEasyPostData, LOGOS } from './App'
 import './SignForm.css'
 
 interface SignFormProps {
@@ -7,16 +7,18 @@ interface SignFormProps {
 }
 
 // Default data for sign type switching
-const getDefaultDataForType = (signType: 'wayfinding' | 'warning'): SignData => {
+const getDefaultDataForType = (signType: 'wayfinding' | 'warning' | 'hardeasy'): SignData => {
   if (signType === 'wayfinding') {
     return defaultWayfindingData
-  } else {
+  } else if (signType === 'warning') {
     return defaultWarningPostData
+  } else {
+    return defaultHardEasyPostData
   }
 }
 
 export function SignForm({ signData, onUpdate }: SignFormProps) {
-  const handleSignTypeChange = (newType: 'wayfinding' | 'warning') => {
+  const handleSignTypeChange = (newType: 'wayfinding' | 'warning' | 'hardeasy') => {
     if (newType !== signData.signType) {
       onUpdate(getDefaultDataForType(newType))
     }
@@ -33,10 +35,11 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
         <select
           id="signType"
           value={signData.signType}
-          onChange={(e) => handleSignTypeChange(e.target.value as 'wayfinding' | 'warning')}
+          onChange={(e) => handleSignTypeChange(e.target.value as 'wayfinding' | 'warning' | 'hardeasy')}
         >
           <option value="wayfinding">Wayfinding Sign</option>
           <option value="warning">Warning Post</option>
+          <option value="hardeasy">Hard/Easy Post</option>
         </select>
       </div>
 
@@ -127,7 +130,7 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
           <select
             id="grade"
             value={signData.grade}
-            onChange={(e) => handleChange('grade', Number(e.target.value) as SignData['grade'])}
+            onChange={(e) => handleChange('grade', Number(e.target.value) as 1 | 2 | 3 | 4 | 5 | 6)}
           >
             <option value={1}>Grade 1</option>
             <option value={2}>Grade 2</option>
@@ -282,6 +285,203 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
               <option value={5}>Grade 5</option>
               <option value={6}>Grade 6</option>
             </select>
+          </div>
+        </>
+      )}
+
+      {/* Hard/Easy Post Fields */}
+      {signData.signType === 'hardeasy' && (
+        <>
+          <h3>Top Section</h3>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="topWord">Top Word</label>
+              <select
+                id="topWord"
+                value={signData.topWord}
+                onChange={(e) => handleChange('topWord', e.target.value)}
+              >
+                  <option value="EASY">EASY</option>
+                  <option value="HARD">HARD</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="topGrade">Top Grade</label>
+              <select
+                id="topGrade"
+                value={signData.topGrade}
+                onChange={(e) => handleChange('topGrade', Number(e.target.value))}
+              >
+                <option value={1}>Grade 1</option>
+                <option value={2}>Grade 2</option>
+                <option value={3}>Grade 3</option>
+                <option value={4}>Grade 4</option>
+                <option value={5}>Grade 5</option>
+                <option value={6}>Grade 6</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Top Arrow Direction</label>
+            <div className="arrow-selector">
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'NW' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'NW')}
+              >
+                ↖
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'N' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'N')}
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'NE' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'NE')}
+              >
+                ↗
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'W' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'W')}
+              >
+                ←
+              </button>
+              <div className="arrow-center">
+                ⊕
+              </div>
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'E' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'E')}
+              >
+                →
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'SW' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'SW')}
+              >
+                ↙
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'S' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'S')}
+              >
+                ↓
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.topDirection === 'SE' ? 'active' : ''}`}
+                onClick={() => handleChange('topDirection', 'SE')}
+              >
+                ↘
+              </button>
+            </div>
+          </div>
+
+          <h3>Bottom Section</h3>
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="bottomWord">Bottom Word</label>
+              <select
+                id="bottomWord"
+                value={signData.bottomWord}
+                onChange={(e) => handleChange('bottomWord', e.target.value)}
+              >
+                <option value="EASY">EASY</option>
+                <option value="HARD">HARD</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="bottomGrade">Bottom Grade</label>
+              <select
+                id="bottomGrade"
+                value={signData.bottomGrade}
+                onChange={(e) => handleChange('bottomGrade', Number(e.target.value))}
+              >
+                <option value={1}>Grade 1</option>
+                <option value={2}>Grade 2</option>
+                <option value={3}>Grade 3</option>
+                <option value={4}>Grade 4</option>
+                <option value={5}>Grade 5</option>
+                <option value={6}>Grade 6</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Bottom Arrow Direction</label>
+            <div className="arrow-selector">
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'NW' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'NW')}
+              >
+                ↖
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'N' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'N')}
+              >
+                ↑
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'NE' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'NE')}
+              >
+                ↗
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'W' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'W')}
+              >
+                ←
+              </button>
+              <div className="arrow-center">
+                ⊕
+              </div>
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'E' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'E')}
+              >
+                →
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'SW' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'SW')}
+              >
+                ↙
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'S' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'S')}
+              >
+                ↓
+              </button>
+              <button
+                type="button"
+                className={`arrow-button ${signData.bottomDirection === 'SE' ? 'active' : ''}`}
+                onClick={() => handleChange('bottomDirection', 'SE')}
+              >
+                ↘
+              </button>
+            </div>
           </div>
         </>
       )}

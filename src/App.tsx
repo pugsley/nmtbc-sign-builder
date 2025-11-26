@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { PDFViewer, pdf } from '@react-pdf/renderer'
+import { pdf } from '@react-pdf/renderer'
 import { SignForm } from './SignForm'
 import { SignPDF } from './SignPDF'
+import { PersistentPDFViewer } from './PersistentPDFViewer'
 import './App.css'
 import nccLogo from './img/ncc.png'
 import koataLogo from './img/koata.png'
@@ -45,8 +46,19 @@ export interface WarningPostData {
   grade?: 1 | 2 | 3 | 4 | 5 | 6
 }
 
+// Hard/Easy Post Data Structure
+export interface HardEasyPostData {
+  signType: 'hardeasy'
+  topDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
+  topWord: 'HARD' | 'EASY'
+  topGrade: 1 | 2 | 3 | 4 | 5 | 6
+  bottomDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
+  bottomWord: 'HARD' | 'EASY'
+  bottomGrade: 1 | 2 | 3 | 4 | 5 | 6
+}
+
 // Discriminated Union of all sign types
-export type SignData = WayfindingSignData | WarningPostData
+export type SignData = WayfindingSignData | WarningPostData | HardEasyPostData
 
 export type SignType = SignData['signType']
 
@@ -57,7 +69,7 @@ export const defaultWayfindingData: WayfindingSignData = {
   grade: 4,
   gradeNote: 'Climb',
   distance: '1.2 km',
-  distanceType: 'Uphill biking\nTwo way walking',
+  distanceType: 'Uphill biking (priority)\nTwo way walking',
   latitude: -41.2971,
   longitude: 174.7222,
   arrowDirection: 'N',
@@ -74,6 +86,16 @@ export const defaultWarningPostData: WarningPostData = {
   grade: 6,
 }
 
+export const defaultHardEasyPostData: HardEasyPostData = {
+  signType: 'hardeasy',
+  topDirection: 'W',
+  topWord: 'EASY',
+  topGrade: 3,
+  bottomDirection: 'E',
+  bottomWord: 'HARD',
+  bottomGrade: 5,
+}
+
 function App() {
   const [signData, setSignData] = useState<SignData>(defaultWayfindingData)
 
@@ -87,9 +109,13 @@ function App() {
     if (signData.signType === 'wayfinding') {
       const trailName = signData.trailName.toLowerCase().replace(/\s+/g, '-').replace(/\n/g, '-')
       filename = `${trailName}-wayfinding-sign.pdf`
-    } else {
+    } else if (signData.signType === 'warning') {
       const title = signData.title.toLowerCase().replace(/\s+/g, '-')
       filename = `${title}-warning-post.pdf`
+    } else {
+      const topWord = signData.topWord.toLowerCase()
+      const bottomWord = signData.bottomWord.toLowerCase()
+      filename = `${topWord}-${bottomWord}-hardeasy-post.pdf`
     }
 
     link.download = filename
@@ -109,9 +135,7 @@ function App() {
       </div>
       <div className="preview-container">
         <h2>Preview</h2>
-        <PDFViewer style={{ width: '100%', flex: 1, border: 'none', borderRadius: '8px' }}>
-          <SignPDF signData={signData} />
-        </PDFViewer>
+        <PersistentPDFViewer signData={signData} style={{ width: '100%', flex: 1 }} />
       </div>
     </div>
   )

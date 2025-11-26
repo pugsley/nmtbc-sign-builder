@@ -1,5 +1,5 @@
 import {Document, Page, View, Text, StyleSheet, Image, Font, Svg, Path} from '@react-pdf/renderer'
-import {SignData, WayfindingSignData, WarningPostData, LOGOS} from './App'
+import {SignData, WayfindingSignData, WarningPostData, HardEasyPostData, LOGOS} from './App'
 
 const MM_TO_PT = 72 / 25.4;
 
@@ -30,6 +30,10 @@ interface WayfindingSignProps {
 
 interface WarningPostProps {
     signData: WarningPostData
+}
+
+interface HardEasyPostProps {
+    signData: HardEasyPostData
 }
 
 const getGradeColor = (grade: number): string => {
@@ -377,7 +381,7 @@ function WarningPost({signData}: WarningPostProps) {
                         {signData.grade && (
                             <View style={{
                                 position: 'absolute',
-                                top: 550 * MM_TO_PT,
+                                top: 580 * MM_TO_PT,
                             }}>
                                 <View style={{
                                     backgroundColor: getGradeColor(signData.grade),
@@ -386,8 +390,8 @@ function WarningPost({signData}: WarningPostProps) {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    borderLeft: '10px solid black',
-                                    borderRight: '10px solid black',
+                                    borderLeft: '10px solid white',
+                                    borderRight: '10px solid white',
                                     transform: 'rotate(90)'
                                 }}>
                                     <Text style={{
@@ -408,6 +412,119 @@ function WarningPost({signData}: WarningPostProps) {
     )
 }
 
+// Hard/Easy Post Component
+function HardEasyPost({signData}: HardEasyPostProps) {
+    const topColor = getGradeColor(signData.topGrade)
+    const bottomColor = getGradeColor(signData.bottomGrade)
+    const topArrowRotation = getArrowRotation(signData.topDirection)
+    const bottomArrowRotation = getArrowRotation(signData.bottomDirection)
+
+    return (
+        <Document>
+            <Page size={[115 * MM_TO_PT, 900 * MM_TO_PT]} orientation="portrait" style={styles.page}>
+                <View style={styles.container}>
+                    {/* Top Section */}
+                    <View style={{
+                        height: '40%',
+                        backgroundColor: topColor,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        paddingTop: 20,
+                        paddingBottom: 20,
+                    }}>
+                        {/* Top Arrow */}
+                        <View style={{
+                            width: 240,
+                            height: 240,
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: 1000,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: 50,
+                            marginTop: 40,
+                        }}>
+                            <Arrow color={topColor} rotation={topArrowRotation} />
+                        </View>
+
+                        {/* Top Word */}
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            flex: 1,
+                            justifyContent: 'flex-start',
+                        }}>
+                            {signData.topWord.split('').map((char, index) => (
+                                <Text key={index} style={{
+                                    fontFamily: 'Overpass Bold',
+                                    fontSize: 150,
+                                    color: '#FFFFFF',
+                                    textAlign: 'center',
+                                    lineHeight: 1,
+                                    marginBottom: 0,
+                                }}>
+                                    {char}
+                                </Text>
+                            ))}
+                        </View>
+                    </View>
+
+                    {/* Bottom Section */}
+                    <View style={{
+                        height: '40%',
+                        backgroundColor: bottomColor,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        paddingTop: 20,
+                        paddingBottom: 20,
+                        marginTop: -1,
+                    }}>
+                        {/* Bottom Arrow */}
+                        <View style={{
+                            width: 240,
+                            height: 240,
+                            backgroundColor: '#FFFFFF',
+                            borderRadius: 1000,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginBottom: 50,
+                            marginTop: 40,
+                        }}>
+                            <Arrow color={bottomColor} rotation={bottomArrowRotation} />
+                        </View>
+
+                        {/* Bottom Word */}
+                        <View style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            flex: 1,
+                            justifyContent: 'flex-start',
+                        }}>
+                            {signData.bottomWord.split('').map((char, index) => (
+                                <Text key={index} style={{
+                                    fontFamily: 'Overpass Bold',
+                                    fontSize: 150,
+                                    color: '#FFFFFF',
+                                    textAlign: 'center',
+                                    lineHeight: 1,
+                                    marginBottom: 0,
+                                }}>
+                                    {char}
+                                </Text>
+                            ))}
+                        </View>
+                    </View>
+                </View>
+            </Page>
+        </Document>
+    )
+}
+
 // Main SignPDF Component - Routes to appropriate sign type
 export function SignPDF({signData}: SignPDFProps) {
     switch (signData.signType) {
@@ -415,6 +532,8 @@ export function SignPDF({signData}: SignPDFProps) {
             return <WayfindingSign signData={signData} />
         case 'warning':
             return <WarningPost signData={signData} />
+        case 'hardeasy':
+            return <HardEasyPost signData={signData} />
         default:
             return <WayfindingSign signData={signData} />
     }
