@@ -176,6 +176,7 @@ Three sign types defined in `src/App.tsx`:
 - Word positioning: `justifyContent: 'flex-start'` for consistent top alignment
 - Sections: `height: '40%'` (not 50% - leaves margin)
 - Font: Overpass Bold 130px
+- **White Divider**: 10px white line appears between sections when `topGrade === bottomGrade` (helps distinguish sections visually when colors match)
 
 ### Default Data
 ```typescript
@@ -220,6 +221,72 @@ Logo images in `src/img/`:
 - `koata.png` - Koata
 - `nmtbc.png` - Nelson Mountain Bike Club
 
+## State Management & Persistence
+
+### localStorage Persistence
+All three sign types maintain independent state that persists across sessions:
+
+**Storage Structure** (`src/App.tsx:102-114`)
+```typescript
+interface StoredSignData {
+  wayfinding: WayfindingSignData
+  warning: WarningPostData
+  hardeasy: HardEasyPostData
+  activeType: SignType
+}
+```
+
+**How It Works:**
+1. Each sign type stores its own configuration independently
+2. Switching between sign types preserves all values
+3. Returns to last active sign type on page load
+4. Data saved to `localStorage['nmtbc-sign-creator-state']`
+
+**Implementation** (`src/App.tsx:213-227`):
+- Saves to localStorage on every state change via `useEffect`
+- Loads on mount with fallback chain: URL → localStorage → defaults
+
+### URL-Based State Sharing
+Share exact sign configurations via URL links:
+
+**URL Format:**
+```
+http://localhost:5173/?data={encoded-json}
+```
+
+**Encoding** (`src/App.tsx:116-147`):
+- JSON.stringify entire StoredSignData object
+- encodeURIComponent for URL safety
+- Single `?data=` query parameter
+
+**Priority System** (`src/App.tsx:170-181`):
+1. **URL parameters** (highest) - shared links
+2. **localStorage** - previous work
+3. **Default values** - first-time visitors
+
+**Automatic URL Updates** (`src/App.tsx:218-223`):
+- URL updates on every state change
+- Uses `window.history.replaceState()` (no page reload)
+- Copy URL from browser to share configuration
+
+### Type Switching Logic
+**Important**: When switching sign types, stored data is preserved (`src/App.tsx:147-164`):
+```typescript
+const handleUpdate = (data: SignData) => {
+  setStoredData(prev => {
+    // If switching types, use stored data (don't overwrite)
+    if (data.signType !== prev.activeType) {
+      return { ...prev, activeType: data.signType }
+    }
+    // Normal update - save to correct slot
+    return { ...prev, [data.signType]: data, activeType: data.signType }
+  })
+}
+```
+
+This prevents `SignForm.tsx` default values from overwriting stored configurations.
+
 ## Future Improvements to Consider
 - Batch PDF generation
-- Save/load sign configurations
+- QR code generation for GPS coordinates
+- Print layout optimization

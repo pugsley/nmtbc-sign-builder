@@ -186,6 +186,9 @@ function App() {
     return loadInitialData()
   })
 
+  // Track the last active type to detect type switches
+  const [lastActiveType, setLastActiveType] = useState<SignType>(storedData.activeType)
+
   // Get the current sign data based on active type
   const signData = storedData[storedData.activeType]
 
@@ -194,6 +197,10 @@ function App() {
     setStoredData(prev => {
       // If switching sign types, use stored data for that type (don't overwrite with defaults)
       if (data.signType !== prev.activeType) {
+        // Clear URL when switching types (rely on localStorage instead)
+        window.history.replaceState({}, '', window.location.pathname)
+        setLastActiveType(data.signType)
+
         return {
           ...prev,
           activeType: data.signType,
@@ -215,16 +222,23 @@ function App() {
       // Save to localStorage
       localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData))
 
-      // Update URL with new data
-      const encoded = serializeToUrl(storedData)
-      if (encoded) {
-        const newUrl = `${window.location.pathname}?data=${encoded}`
-        window.history.replaceState({}, '', newUrl)
+      // Only update URL if we didn't just switch types (URL was already cleared)
+      const justSwitchedTypes = storedData.activeType !== lastActiveType
+      if (!justSwitchedTypes) {
+        // Update URL with new data
+        const encoded = serializeToUrl(storedData)
+        if (encoded) {
+          const newUrl = `${window.location.pathname}?data=${encoded}`
+          window.history.replaceState({}, '', newUrl)
+        }
+      } else {
+        // Update lastActiveType for next render
+        setLastActiveType(storedData.activeType)
       }
     } catch (error) {
       console.error('Error saving to localStorage/URL:', error)
     }
-  }, [storedData])
+  }, [storedData, lastActiveType])
 
   const handleDownload = async () => {
     const blob = await pdf(<SignPDF signData={signData} />).toBlob()
