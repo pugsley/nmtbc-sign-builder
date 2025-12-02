@@ -301,8 +301,8 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
                 value={signData.topWord}
                 onChange={(e) => handleChange('topWord', e.target.value)}
               >
-                  <option value="EASY">EASY</option>
-                  <option value="HARD">HARD</option>
+                <option value="EASY">EASY</option>
+                <option value="HARD">HARD</option>
               </select>
             </div>
 

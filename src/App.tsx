@@ -255,8 +255,12 @@ function App() {
       filename = `${title}-warning-post.pdf`
     } else {
       const topWord = signData.topWord.toLowerCase()
+      const topDirection = signData.topDirection.toLowerCase()
+      const topGrade = signData.topGrade
       const bottomWord = signData.bottomWord.toLowerCase()
-      filename = `${topWord}-${bottomWord}-hardeasy-post.pdf`
+      const bottomDirection = signData.bottomDirection.toLowerCase()
+      const bottomGrade = signData.bottomGrade
+      filename = `${topWord}-${topDirection}-${topGrade}-${bottomWord}-${bottomDirection}-${bottomGrade}.pdf`
     }
 
     link.download = filename

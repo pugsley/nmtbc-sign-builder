@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
 
 // Arrow component using SVG Path
 const Arrow = ({color, rotation}: { color: string; rotation: number }) => (
-    <Svg width="200" height="200" viewBox="0 0 100 100" style={{transform: `rotate(${rotation}deg)`}}>
+    <Svg width="160" height="160" viewBox="0 0 100 100" style={{transform: `rotate(${rotation}deg)`}}>
         {/* Arrow shaft */}
         <Path
             d="M 0 0 H 100"
@@ -425,7 +425,7 @@ function HardEasyPost({signData}: HardEasyPostProps) {
                 <View style={styles.container}>
                     {/* Top Section */}
                     <View style={{
-                        height: '40%',
+                        height: 450 * MM_TO_PT,
                         backgroundColor: topColor,
                         display: 'flex',
                         flexDirection: 'column',
@@ -435,15 +435,15 @@ function HardEasyPost({signData}: HardEasyPostProps) {
                     }}>
                         {/* Top Arrow */}
                         <View style={{
-                            width: 240,
-                            height: 240,
+                            width: 70 * MM_TO_PT,
+                            height: 70 * MM_TO_PT,
                             backgroundColor: '#FFFFFF',
                             borderRadius: 1000,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginBottom: 50,
-                            marginTop: 40,
+                            marginBottom: 60,
+                            marginTop: 60,
                         }}>
                             <Arrow color={topColor} rotation={topArrowRotation} />
                         </View>
@@ -482,7 +482,7 @@ function HardEasyPost({signData}: HardEasyPostProps) {
 
                     {/* Bottom Section */}
                     <View style={{
-                        height: '40%',
+                        height: 450 * MM_TO_PT,
                         backgroundColor: bottomColor,
                         display: 'flex',
                         flexDirection: 'column',
@@ -493,15 +493,15 @@ function HardEasyPost({signData}: HardEasyPostProps) {
                     }}>
                         {/* Bottom Arrow */}
                         <View style={{
-                            width: 240,
-                            height: 240,
+                            width: 70 * MM_TO_PT,
+                            height: 70 * MM_TO_PT,
                             backgroundColor: '#FFFFFF',
                             borderRadius: 1000,
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            marginBottom: 50,
-                            marginTop: 40,
+                            marginBottom: 60,
+                            marginTop: 60,
                         }}>
                             <Arrow color={bottomColor} rotation={bottomArrowRotation} />
                         </View>
