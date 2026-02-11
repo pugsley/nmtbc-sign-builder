@@ -34,10 +34,11 @@ export function WarningPostForm({signData, onChange}: WarningPostFormProps) {
 
             <GradeSelector
                 id="grade"
-                label="Grade Level (Optional)"
+                label="Grade Level"
                 value={signData.grade as any}
                 onChange={(grade) => onChange('grade', grade)}
                 optional={true}
+                required={false}
             />
         </>
     )

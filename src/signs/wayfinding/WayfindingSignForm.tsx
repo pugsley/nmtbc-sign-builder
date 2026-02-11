@@ -1,5 +1,5 @@
 import {WayfindingSignData, LOGOS} from '../../App'
-import {GradeSelector, ArrowDirectionSelector} from '../shared/formComponents'
+import {TrailNameInput, GradeSelector, ArrowDirectionSelector} from '../shared/formComponents'
 
 interface WayfindingSignFormProps {
     signData: WayfindingSignData
@@ -10,16 +10,12 @@ export function WayfindingSignForm({signData, onChange}: WayfindingSignFormProps
     return (
         <>
             <div className="trail-name-row">
-                <div className="form-group">
-                    <label htmlFor="trailName">Trail Name</label>
-                    <textarea
-                        id="trailName"
-                        value={signData.trailName}
-                        onChange={(e) => onChange('trailName', e.target.value)}
-                        placeholder="e.g., Penny Farthing"
-                        rows={3}
-                    />
-                </div>
+                <TrailNameInput
+                    id="trailName"
+                    value={signData.trailName}
+                    onChange={(value) => onChange('trailName', value)}
+                    rows={2}
+                />
 
                 <ArrowDirectionSelector
                     label="Arrow Direction"
@@ -94,7 +90,7 @@ export function WayfindingSignForm({signData, onChange}: WayfindingSignFormProps
 
             <div className="form-row">
                 <div className="form-group">
-                    <label htmlFor="latitude">Latitude</label>
+                    <label htmlFor="latitude">Latitude *</label>
                     <input
                         type="number"
                         id="latitude"
@@ -106,7 +102,7 @@ export function WayfindingSignForm({signData, onChange}: WayfindingSignFormProps
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="longitude">Longitude</label>
+                    <label htmlFor="longitude">Longitude *</label>
                     <input
                         type="number"
                         id="longitude"

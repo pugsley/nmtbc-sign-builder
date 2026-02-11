@@ -175,10 +175,11 @@ export const Warning = ({color}: { color: string }) => (
 )
 
 // Reusable Location Coordinates Component
-export const LocationCoordinates = ({latitude, longitude, fontSize = 12}: {
+export const LocationCoordinates = ({latitude, longitude, fontSize = 12, singleLine = false}: {
     latitude: number;
     longitude: number;
     fontSize?: number;
+    singleLine?: boolean;
 }) => (
     <View style={{display: 'flex', flexDirection: 'column'}}>
         <Text style={{
@@ -187,7 +188,7 @@ export const LocationCoordinates = ({latitude, longitude, fontSize = 12}: {
             color: '#FFFFFF',
             marginBottom: -3,
         }}>
-            Location{"\n"}
+            Location{singleLine ? '   ' : "\n"}
             <Text style={{ letterSpacing: 1.2 }}>
                 {Math.abs(latitude).toFixed(4)}° {latitude >= 0 ? 'N' : 'S'}, {Math.abs(longitude).toFixed(4)}° {longitude >= 0 ? 'E' : 'W'}
             </Text>

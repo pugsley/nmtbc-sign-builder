@@ -1,17 +1,41 @@
 import {ArrowDirection, Grade} from '../../App'
 
+interface TrailNameInputProps {
+    id: string
+    value: string
+    onChange: (value: string) => void
+    rows?: number
+    required?: boolean
+}
+
+export function TrailNameInput({id, value, onChange, rows = 3, required = true}: TrailNameInputProps) {
+    return (
+        <div className="form-group">
+            <label htmlFor={id}>Trail Name{required && ' *'}</label>
+            <textarea
+                id={id}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                placeholder="e.g., Te Piki"
+                rows={rows}
+            />
+        </div>
+    )
+}
+
 interface GradeSelectorProps {
     id: string
     label: string
     value: Grade
     onChange: (grade: Grade) => void
     optional?: boolean
+    required?: boolean
 }
 
-export function GradeSelector({id, label, value, onChange, optional = false}: GradeSelectorProps) {
+export function GradeSelector({id, label, value, onChange, optional = false, required = true}: GradeSelectorProps) {
     return (
         <div className="form-group">
-            <label htmlFor={id}>{label}</label>
+            <label htmlFor={id}>{label}{required && ' *'}</label>
             <select
                 id={id}
                 value={value ?? ''}
@@ -34,9 +58,10 @@ interface ArrowDirectionSelectorProps {
     value?: ArrowDirection
     onChange: (direction: ArrowDirection | undefined) => void
     optional?: boolean
+    required?: boolean
 }
 
-export function ArrowDirectionSelector({label, value, onChange, optional = false}: ArrowDirectionSelectorProps) {
+export function ArrowDirectionSelector({label, value, onChange, optional = false, required = true}: ArrowDirectionSelectorProps) {
     const directions: Array<{dir: ArrowDirection, symbol: string}> = [
         {dir: 'NW', symbol: '↖'},
         {dir: 'N', symbol: '↑'},
@@ -50,7 +75,7 @@ export function ArrowDirectionSelector({label, value, onChange, optional = false
 
     return (
         <div className="form-group">
-            <label>{label}{optional && ' (Optional)'}</label>
+            <label>{label}{required && ' *'}</label>
             <div className="arrow-selector">
                 {directions.slice(0, 3).map(({dir, symbol}) => (
                     <button

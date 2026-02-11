@@ -1,5 +1,5 @@
 import {SmallWayfindingSignData, SmallWayfindingBackground} from '../../App'
-import {ArrowDirectionSelector} from '../shared/formComponents'
+import {TrailNameInput, ArrowDirectionSelector} from '../shared/formComponents'
 
 interface SmallWayfindingSignFormProps {
     signData: SmallWayfindingSignData
@@ -9,19 +9,25 @@ interface SmallWayfindingSignFormProps {
 export function SmallWayfindingSignForm({signData, onChange}: SmallWayfindingSignFormProps) {
     return (
         <>
-            <div className="form-group">
-                <label htmlFor="trailName">Trail Name</label>
-                <input
-                    type="text"
+            <div className="trail-name-row">
+                <TrailNameInput
                     id="trailName"
                     value={signData.trailName}
-                    onChange={(e) => onChange('trailName', e.target.value)}
-                    placeholder="e.g., Te Piki"
+                    onChange={(value) => onChange('trailName', value)}
+                    rows={2}
+                />
+
+                <ArrowDirectionSelector
+                    label="Arrow Direction"
+                    value={signData.arrowDirection}
+                    onChange={(direction) => onChange('arrowDirection', direction)}
+                    optional={true}
+                    required={false}
                 />
             </div>
 
             <div className="form-group">
-                <label htmlFor="activityDescription">Activity Description (optional)</label>
+                <label htmlFor="activityDescription">Activity Description</label>
                 <textarea
                     id="activityDescription"
                     value={signData.activityDescription}
@@ -32,7 +38,7 @@ export function SmallWayfindingSignForm({signData, onChange}: SmallWayfindingSig
             </div>
 
             <div className="form-group">
-                <label htmlFor="background">Background Color</label>
+                <label htmlFor="background">Background</label>
                 <select
                     id="background"
                     value={signData.background}
@@ -54,16 +60,9 @@ export function SmallWayfindingSignForm({signData, onChange}: SmallWayfindingSig
                 </select>
             </div>
 
-            <ArrowDirectionSelector
-                label="Arrow Direction"
-                value={signData.arrowDirection}
-                onChange={(direction) => onChange('arrowDirection', direction)}
-                optional={true}
-            />
-
             <div className="form-row">
                 <div className="form-group">
-                    <label htmlFor="latitude">Latitude (Optional)</label>
+                    <label htmlFor="latitude">Latitude</label>
                     <input
                         type="number"
                         id="latitude"
@@ -75,7 +74,7 @@ export function SmallWayfindingSignForm({signData, onChange}: SmallWayfindingSig
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="longitude">Longitude (Optional)</label>
+                    <label htmlFor="longitude">Longitude</label>
                     <input
                         type="number"
                         id="longitude"

@@ -25,34 +25,37 @@ const styles = StyleSheet.create({
     },
     content: {
         position: 'relative',
-        padding: 28,
+        padding: 40,
         height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-    },
-    topRow: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'flex-start',
+        alignItems: 'center',
+        gap: 30,
     },
-    textContainer: {
+    textColumn: {
         flex: 1,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        gap: 5,
     },
     trailName: {
         fontFamily: 'Open Sans Bold',
         fontSize: 50,
         color: '#FFFFFF',
+        wordBreak: 'keep-all',
+        lineHeight: 1.2,
+        marginTop: -10, // Compensate for the space above the first line of text
     },
     activityDescription: {
         fontFamily: 'Open Sans Semi-Bold',
         fontSize: 24,
         color: '#FFFFFF',
-        marginTop: 10,
+    },
+    location: {
+        position: 'absolute',
+        left: 40,
+        bottom: 20,
     },
 })
 
@@ -66,29 +69,26 @@ export function SmallWayfindingSign({signData}: SmallWayfindingSignProps) {
                 <View style={styles.container}>
                     <View style={[styles.background, {backgroundColor}]}/>
                     <View style={styles.content}>
-                        {/* Top Row: Trail Name/Description and Arrow */}
-                        <View style={styles.topRow}>
-                            {/* Left side: Trail Name and Activity Description */}
-                            <View style={styles.textContainer}>
-                                <Text style={styles.trailName}>{signData.trailName}</Text>
-                                {signData.activityDescription && (
-                                    <Text style={styles.activityDescription}>{signData.activityDescription}</Text>
-                                )}
-                            </View>
-
-                            {/* Arrow Circle (optional) */}
-                            {signData.arrowDirection && (
-                                <View style={{marginRight: 0}}>
-                                    <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={50} />
-                                </View>
+                        {/* Left: All text content */}
+                        <View style={styles.textColumn}>
+                            <Text style={styles.trailName}>{signData.trailName}</Text>
+                            {signData.activityDescription && (
+                                <Text style={styles.activityDescription}>{signData.activityDescription}</Text>
                             )}
                         </View>
 
-                        {/* Bottom: Location Coordinates (if provided) */}
-                        {signData.latitude !== undefined && signData.longitude !== undefined && (
-                            <LocationCoordinates latitude={signData.latitude} longitude={signData.longitude} fontSize={10} />
+                        {/* Right: Arrow Circle */}
+                        {signData.arrowDirection && (
+                            <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={50} />
                         )}
                     </View>
+
+                    {/* Location - Bottom left corner */}
+                    {signData.latitude !== undefined && signData.longitude !== undefined && (
+                        <View style={styles.location}>
+                            <LocationCoordinates latitude={signData.latitude} longitude={signData.longitude} fontSize={10} singleLine={true} />
+                        </View>
+                    )}
                 </View>
             </Page>
         </Document>
