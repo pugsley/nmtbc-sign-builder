@@ -1,6 +1,6 @@
 import {Document, Page, View, Text, StyleSheet} from '@react-pdf/renderer'
 import {HardEasyPostData} from '../../App'
-import {MM_TO_PT, getGradeColor, getArrowRotation, Arrow} from '../shared/pdfUtils'
+import {mmToPt, getGradeColor, getArrowRotation, Arrow} from '../shared/pdfUtils'
 
 interface HardEasyPostProps {
     signData: HardEasyPostData
@@ -26,11 +26,11 @@ export function HardEasyPost({signData}: HardEasyPostProps) {
 
     return (
         <Document>
-            <Page size={[115 * MM_TO_PT, 900 * MM_TO_PT]} orientation="portrait" style={styles.page}>
+            <Page size={[mmToPt(115), mmToPt(900)]} orientation="portrait" style={styles.page}>
                 <View style={styles.container}>
                     {/* Top Section */}
                     <View style={{
-                        height: 450 * MM_TO_PT,
+                        height: mmToPt(450),
                         backgroundColor: topColor,
                         display: 'flex',
                         flexDirection: 'column',
@@ -40,8 +40,8 @@ export function HardEasyPost({signData}: HardEasyPostProps) {
                     }}>
                         {/* Top Arrow */}
                         <View style={{
-                            width: 70 * MM_TO_PT,
-                            height: 70 * MM_TO_PT,
+                            width: mmToPt(70),
+                            height: mmToPt(70),
                             backgroundColor: '#FFFFFF',
                             borderRadius: 1000,
                             display: 'flex',
@@ -87,7 +87,7 @@ export function HardEasyPost({signData}: HardEasyPostProps) {
 
                     {/* Bottom Section */}
                     <View style={{
-                        height: 450 * MM_TO_PT,
+                        height: mmToPt(450),
                         backgroundColor: bottomColor,
                         display: 'flex',
                         flexDirection: 'column',
@@ -98,8 +98,8 @@ export function HardEasyPost({signData}: HardEasyPostProps) {
                     }}>
                         {/* Bottom Arrow */}
                         <View style={{
-                            width: 70 * MM_TO_PT,
-                            height: 70 * MM_TO_PT,
+                            width: mmToPt(70),
+                            height: mmToPt(70),
                             backgroundColor: '#FFFFFF',
                             borderRadius: 1000,
                             display: 'flex',

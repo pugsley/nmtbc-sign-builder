@@ -1,4 +1,5 @@
 import {WayfindingSignData, LOGOS} from '../../App'
+import {GradeSelector, ArrowDirectionSelector} from '../shared/formComponents'
 
 interface WayfindingSignFormProps {
     signData: WayfindingSignData
@@ -20,88 +21,20 @@ export function WayfindingSignForm({signData, onChange}: WayfindingSignFormProps
                     />
                 </div>
 
-                <div className="form-group">
-                    <label>Arrow Direction</label>
-                    <div className="arrow-selector">
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'NW' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'NW')}
-                        >
-                            ↖
-                        </button>
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'N' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'N')}
-                        >
-                            ↑
-                        </button>
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'NE' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'NE')}
-                        >
-                            ↗
-                        </button>
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'W' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'W')}
-                        >
-                            ←
-                        </button>
-                        <div className="arrow-center">
-                            ⊕
-                        </div>
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'E' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'E')}
-                        >
-                            →
-                        </button>
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'SW' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'SW')}
-                        >
-                            ↙
-                        </button>
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'S' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'S')}
-                        >
-                            ↓
-                        </button>
-                        <button
-                            type="button"
-                            className={`arrow-button ${signData.arrowDirection === 'SE' ? 'active' : ''}`}
-                            onClick={() => onChange('arrowDirection', 'SE')}
-                        >
-                            ↘
-                        </button>
-                    </div>
-                </div>
+                <ArrowDirectionSelector
+                    label="Arrow Direction"
+                    value={signData.arrowDirection}
+                    onChange={(direction) => onChange('arrowDirection', direction)}
+                />
             </div>
 
             <div className="form-row-3">
-                <div className="form-group">
-                    <label htmlFor="grade">Grade Level</label>
-                    <select
-                        id="grade"
-                        value={signData.grade}
-                        onChange={(e) => onChange('grade', Number(e.target.value) as 1 | 2 | 3 | 4 | 5 | 6)}
-                    >
-                        <option value={1}>Grade 1</option>
-                        <option value={2}>Grade 2</option>
-                        <option value={3}>Grade 3</option>
-                        <option value={4}>Grade 4</option>
-                        <option value={5}>Grade 5</option>
-                        <option value={6}>Grade 6</option>
-                    </select>
-                </div>
+                <GradeSelector
+                    id="grade"
+                    label="Grade Level"
+                    value={signData.grade}
+                    onChange={(grade) => onChange('grade', grade)}
+                />
 
                 <div className="form-group">
                     <label htmlFor="gradeNote">Grade Note</label>

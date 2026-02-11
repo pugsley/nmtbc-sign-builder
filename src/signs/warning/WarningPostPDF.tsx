@@ -1,6 +1,6 @@
 import {Document, Page, View, Text, StyleSheet} from '@react-pdf/renderer'
 import {WarningPostData} from '../../App'
-import {MM_TO_PT, getGradeColor, Danger, Warning} from '../shared/pdfUtils'
+import {mmToPt, getGradeColor, getWarningColor, Danger, Warning} from '../shared/pdfUtils'
 
 interface WarningPostProps {
     signData: WarningPostData
@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
 })
 
 export function WarningPost({signData}: WarningPostProps) {
-    const backgroundColor = signData.symbol === 'warning' ? '#ECBA42' : '#C63823'
+    const backgroundColor = getWarningColor(signData.symbol)
 
     return (
         <Document key={signData.symbol}>
-            <Page size={[115 * MM_TO_PT, 900 * MM_TO_PT]} orientation="portrait" style={styles.page}>
+            <Page size={[mmToPt(115), mmToPt(900)]} orientation="portrait" style={styles.page}>
                 <View style={styles.container}>
                     <View style={[styles.background, {backgroundColor}]}/>
                     <View style={styles.content}>
@@ -74,12 +74,12 @@ export function WarningPost({signData}: WarningPostProps) {
                         {signData.grade && (
                             <View style={{
                                 position: 'absolute',
-                                top: 580 * MM_TO_PT,
+                                top: mmToPt(580),
                             }}>
                                 <View style={{
                                     backgroundColor: getGradeColor(signData.grade),
-                                    height: 115 * MM_TO_PT,
-                                    width: 240 * MM_TO_PT,
+                                    height: mmToPt(115),
+                                    width: mmToPt(240),
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',

@@ -1,6 +1,6 @@
 import {Document, Page, View, Text, StyleSheet, Image} from '@react-pdf/renderer'
 import {WayfindingSignData, LOGOS} from '../../App'
-import {MM_TO_PT, getGradeColor, getArrowRotation, Arrow, Bike, Walker} from '../shared/pdfUtils'
+import {mmToPt, getGradeColor, getArrowRotation, Arrow, Bike, Walker} from '../shared/pdfUtils'
 
 interface WayfindingSignProps {
     signData: WayfindingSignData
@@ -129,7 +129,7 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
 
     return (
         <Document>
-            <Page size={[240 * MM_TO_PT, 480 * MM_TO_PT]} orientation="portrait" style={styles.page}>
+            <Page size={[mmToPt(240), mmToPt(480)]} orientation="portrait" style={styles.page}>
                 <View style={styles.container}>
                     <View style={[styles.background, {backgroundColor}]}/>
                     <View style={styles.content}>

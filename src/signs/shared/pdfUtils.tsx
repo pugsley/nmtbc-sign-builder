@@ -1,7 +1,14 @@
 import {Font, Svg, Path} from '@react-pdf/renderer'
-import {WayfindingSignData} from '../../App'
+import {WayfindingSignData, WarningPostData} from '../../App'
 
 export const MM_TO_PT = 72 / 25.4;
+
+// Convert millimeters to points
+export const mmToPt = (mm: number): number => mm * MM_TO_PT;
+
+// Warning Post Colors
+export const WARNING_COLOR = '#ECBA42'  // Yellow
+export const DANGER_COLOR = '#C63823'   // Red
 
 // Register Fonts
 Font.register({
@@ -44,6 +51,10 @@ export const getArrowRotation = (direction: WayfindingSignData['arrowDirection']
         'NW': 315,
     }
     return rotations[direction]
+}
+
+export const getWarningColor = (symbol: WarningPostData['symbol']): string => {
+    return symbol === 'warning' ? WARNING_COLOR : DANGER_COLOR
 }
 
 // Shared Components
