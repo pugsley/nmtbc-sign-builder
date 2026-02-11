@@ -1,5 +1,5 @@
 import {Font, Svg, Path, View, Text} from '@react-pdf/renderer'
-import {WayfindingSignData, WarningPostData, SmallWayfindingBackground} from '../../App'
+import {ArrowDirection, Grade, WarningSymbol, SmallWayfindingBackground} from '../../App'
 
 export const MM_TO_PT = 72 / 25.4;
 
@@ -27,8 +27,8 @@ Font.register({
 })
 
 // Utility Functions
-export const getGradeColor = (grade: number): string => {
-    const colors: Record<number, string> = {
+export const getGradeColor = (grade: Grade): string => {
+    const colors: Record<Grade, string> = {
         1: '#8BBF4B', // Light Green
         2: '#45A525', // Bright Green
         3: '#47ACEC', // Cyan
@@ -36,11 +36,11 @@ export const getGradeColor = (grade: number): string => {
         5: '#27292E', // Dark Gray
         6: '#C63823', // Red-Orange
     }
-    return colors[grade] || colors[3]
+    return colors[grade]
 }
 
-export const getArrowRotation = (direction: WayfindingSignData['arrowDirection']): number => {
-    const rotations: Record<WayfindingSignData['arrowDirection'], number> = {
+export const getArrowRotation = (direction: ArrowDirection): number => {
+    const rotations: Record<ArrowDirection, number> = {
         'N': 0,
         'NE': 45,
         'E': 90,
@@ -53,7 +53,7 @@ export const getArrowRotation = (direction: WayfindingSignData['arrowDirection']
     return rotations[direction]
 }
 
-export const getWarningColor = (symbol: WarningPostData['symbol']): string => {
+export const getWarningColor = (symbol: WarningSymbol): string => {
     return symbol === 'warning' ? WARNING_COLOR : DANGER_COLOR
 }
 

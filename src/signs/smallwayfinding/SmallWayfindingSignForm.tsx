@@ -58,6 +58,7 @@ export function SmallWayfindingSignForm({signData, onChange}: SmallWayfindingSig
                 label="Arrow Direction"
                 value={signData.arrowDirection}
                 onChange={(direction) => onChange('arrowDirection', direction)}
+                optional={true}
             />
 
             <div className="form-row">

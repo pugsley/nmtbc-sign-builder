@@ -1,7 +1,4 @@
-import {WayfindingSignData} from '../../App'
-
-type ArrowDirection = WayfindingSignData['arrowDirection']
-type Grade = 1 | 2 | 3 | 4 | 5 | 6
+import {ArrowDirection, Grade} from '../../App'
 
 interface GradeSelectorProps {
     id: string
@@ -34,11 +31,12 @@ export function GradeSelector({id, label, value, onChange, optional = false}: Gr
 
 interface ArrowDirectionSelectorProps {
     label: string
-    value: ArrowDirection
-    onChange: (direction: ArrowDirection) => void
+    value?: ArrowDirection
+    onChange: (direction: ArrowDirection | undefined) => void
+    optional?: boolean
 }
 
-export function ArrowDirectionSelector({label, value, onChange}: ArrowDirectionSelectorProps) {
+export function ArrowDirectionSelector({label, value, onChange, optional = false}: ArrowDirectionSelectorProps) {
     const directions: Array<{dir: ArrowDirection, symbol: string}> = [
         {dir: 'NW', symbol: '↖'},
         {dir: 'N', symbol: '↑'},
@@ -52,7 +50,7 @@ export function ArrowDirectionSelector({label, value, onChange}: ArrowDirectionS
 
     return (
         <div className="form-group">
-            <label>{label}</label>
+            <label>{label}{optional && ' (Optional)'}</label>
             <div className="arrow-selector">
                 {directions.slice(0, 3).map(({dir, symbol}) => (
                     <button
@@ -71,9 +69,19 @@ export function ArrowDirectionSelector({label, value, onChange}: ArrowDirectionS
                 >
                     ←
                 </button>
-                <div className="arrow-center">
-                    ⊕
-                </div>
+                {optional ? (
+                    <button
+                        type="button"
+                        className={`arrow-button ${value === undefined ? 'active' : ''}`}
+                        onClick={() => onChange(undefined)}
+                    >
+                        ✕
+                    </button>
+                ) : (
+                    <div className="arrow-center">
+                        ⊕
+                    </div>
+                )}
                 <button
                     type="button"
                     className={`arrow-button ${value === 'E' ? 'active' : ''}`}

@@ -23,17 +23,23 @@ export const LOGOS: LogoDefinition[] = [
   { id: 'nmtbc', name: 'NMTBC', image: nmtbcLogo },
 ]
 
+// Common Types
+export type Grade = 1 | 2 | 3 | 4 | 5 | 6
+export type ArrowDirection = 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
+export type WarningSymbol = 'danger' | 'warning'
+export type HardEasyWord = 'HARD' | 'EASY'
+
 // Wayfinding Sign Data Structure
 export interface WayfindingSignData {
   signType: 'wayfinding'
   trailName: string
-  grade: 1 | 2 | 3 | 4 | 5 | 6
+  grade: Grade
   gradeNote: string
   distance: string
   distanceType: string
   latitude: number
   longitude: number
-  arrowDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
+  arrowDirection: ArrowDirection
   logo: string | null
   bike: boolean
   walk: boolean
@@ -43,30 +49,30 @@ export interface WayfindingSignData {
 // Warning Post Data Structure
 export interface WarningPostData {
   signType: 'warning'
-  symbol: 'danger' | 'warning'
+  symbol: WarningSymbol
   title: string
-  grade?: 1 | 2 | 3 | 4 | 5 | 6
+  grade?: Grade
 }
 
 // Hard/Easy Post Data Structure
 export interface HardEasyPostData {
   signType: 'hardeasy'
-  topDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
-  topWord: 'HARD' | 'EASY'
-  topGrade: 1 | 2 | 3 | 4 | 5 | 6
-  bottomDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
-  bottomWord: 'HARD' | 'EASY'
-  bottomGrade: 1 | 2 | 3 | 4 | 5 | 6
+  topDirection: ArrowDirection
+  topWord: HardEasyWord
+  topGrade: Grade
+  bottomDirection: ArrowDirection
+  bottomWord: HardEasyWord
+  bottomGrade: Grade
 }
 
 // Small Wayfinding Sign Data Structure
-export type SmallWayfindingBackground = 1 | 2 | 3 | 4 | 5 | 6 | 'nograde' | 'warning' | 'danger'
+export type SmallWayfindingBackground = Grade | 'nograde' | 'warning' | 'danger'
 
 export interface SmallWayfindingSignData {
   signType: 'smallwayfinding'
   trailName: string
   background: SmallWayfindingBackground
-  arrowDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
+  arrowDirection?: ArrowDirection
   activityDescription: string
   latitude?: number
   longitude?: number

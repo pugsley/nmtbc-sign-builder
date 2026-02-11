@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
 
 export function SmallWayfindingSign({signData}: SmallWayfindingSignProps) {
     const backgroundColor = getSmallWayfindingBackgroundColor(signData.background)
-    const arrowRotation = getArrowRotation(signData.arrowDirection)
+    const arrowRotation = signData.arrowDirection ? getArrowRotation(signData.arrowDirection) : 0
 
     return (
         <Document>
@@ -76,10 +76,12 @@ export function SmallWayfindingSign({signData}: SmallWayfindingSignProps) {
                                 )}
                             </View>
 
-                            {/* Arrow Circle */}
-                            <View style={{marginRight: 0}}>
-                                <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={50} />
-                            </View>
+                            {/* Arrow Circle (optional) */}
+                            {signData.arrowDirection && (
+                                <View style={{marginRight: 0}}>
+                                    <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={50} />
+                                </View>
+                            )}
                         </View>
 
                         {/* Bottom: Location Coordinates (if provided) */}
