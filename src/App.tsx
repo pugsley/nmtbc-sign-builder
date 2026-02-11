@@ -60,11 +60,16 @@ export interface HardEasyPostData {
 }
 
 // Small Wayfinding Sign Data Structure
+export type SmallWayfindingBackground = 1 | 2 | 3 | 4 | 5 | 6 | 'nograde' | 'warning' | 'danger'
+
 export interface SmallWayfindingSignData {
   signType: 'smallwayfinding'
   trailName: string
-  grade: 1 | 2 | 3 | 4 | 5 | 6
+  background: SmallWayfindingBackground
   arrowDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
+  activityDescription: string
+  latitude?: number
+  longitude?: number
 }
 
 // Discriminated Union of all sign types
@@ -109,8 +114,11 @@ export const defaultHardEasyPostData: HardEasyPostData = {
 export const defaultSmallWayfindingData: SmallWayfindingSignData = {
   signType: 'smallwayfinding',
   trailName: 'Te Piki',
-  grade: 4,
+  background: 4,
   arrowDirection: 'N',
+  activityDescription: '',
+  latitude: -41.2971,
+  longitude: 174.7222,
 }
 
 // Storage structure to hold all sign types

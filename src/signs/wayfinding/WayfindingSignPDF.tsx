@@ -1,6 +1,6 @@
 import {Document, Page, View, Text, StyleSheet, Image} from '@react-pdf/renderer'
 import {WayfindingSignData, LOGOS} from '../../App'
-import {mmToPt, getGradeColor, getArrowRotation, ArrowCircle, Bike, Walker} from '../shared/pdfUtils'
+import {mmToPt, getGradeColor, getArrowRotation, ArrowCircle, Bike, Walker, LocationCoordinates} from '../shared/pdfUtils'
 
 interface WayfindingSignProps {
     signData: WayfindingSignData
@@ -94,16 +94,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginTop: 50,
     },
-    coordinates: {
-        display: 'flex',
-        flexDirection: 'column',
-    },
-    coordinateLabel: {
-        fontFamily: 'Open Sans Semi-Bold',
-        fontSize: 12,
-        color: '#FFFFFF',
-        marginBottom: -3,
-    },
     footerLogos: {
         display: 'flex',
         flexDirection: 'row',
@@ -163,11 +153,7 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
 
                         {/* Bottom Section */}
                         <View style={styles.bottomSection}>
-                            <View style={styles.coordinates}>
-                                <Text style={styles.coordinateLabel}>
-                                    Location{"\n"}<Text style={{ letterSpacing: 1.2 }}>{Math.abs(signData.latitude).toFixed(4)}° {signData.latitude >= 0 ? 'N' : 'S'}, {Math.abs(signData.longitude).toFixed(4)}° {signData.longitude >= 0 ? 'E' : 'W'}</Text>
-                                </Text>
-                            </View>
+                            <LocationCoordinates latitude={signData.latitude} longitude={signData.longitude} />
                             <View style={styles.footerLogos}>
                                 {LOGOS.map(logo =>
                                     signData.logoToggles[logo.id] && (

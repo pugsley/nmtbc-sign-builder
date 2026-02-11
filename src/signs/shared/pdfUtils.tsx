@@ -1,5 +1,5 @@
-import {Font, Svg, Path, View} from '@react-pdf/renderer'
-import {WayfindingSignData, WarningPostData} from '../../App'
+import {Font, Svg, Path, View, Text} from '@react-pdf/renderer'
+import {WayfindingSignData, WarningPostData, SmallWayfindingBackground} from '../../App'
 
 export const MM_TO_PT = 72 / 25.4;
 
@@ -55,6 +55,22 @@ export const getArrowRotation = (direction: WayfindingSignData['arrowDirection']
 
 export const getWarningColor = (symbol: WarningPostData['symbol']): string => {
     return symbol === 'warning' ? WARNING_COLOR : DANGER_COLOR
+}
+
+export const getSmallWayfindingBackgroundColor = (background: SmallWayfindingBackground): string => {
+    if (typeof background === 'number') {
+        return getGradeColor(background)
+    }
+    switch (background) {
+        case 'nograde':
+            return '#9399AB'
+        case 'warning':
+            return WARNING_COLOR
+        case 'danger':
+            return DANGER_COLOR
+        default:
+            return getGradeColor(3)
+    }
 }
 
 // Shared Components
@@ -156,4 +172,25 @@ export const Warning = ({color}: { color: string }) => (
             d="M81 279L279 81C289.9 70.1 304.6 64 320 64C335.4 64 350.1 70.1 361 81L559 279C569.9 289.9 576 304.6 576 320C576 335.4 569.9 350.1 559 361L361 559C350.1 569.9 335.4 576 320 576C304.6 576 289.9 569.9 279 559L81 361C70.1 350.1 64 335.4 64 320C64 304.6 70.1 289.9 81 279z M320 384C302.3 384 288 398.3 288 416C288 433.7 302.3 448 320 448C337.7 448 352 433.7 352 416C352 398.3 337.7 384 320 384z M320 192C301.8 192 287.3 207.5 288.6 225.7L296 329.7C296.9 342.2 307.4 352 319.9 352C332.5 352 342.9 342.3 343.8 329.7L351.2 225.7C352.5 207.5 338.1 192 319.8 192z"
         />
     </Svg>
+)
+
+// Reusable Location Coordinates Component
+export const LocationCoordinates = ({latitude, longitude, fontSize = 12}: {
+    latitude: number;
+    longitude: number;
+    fontSize?: number;
+}) => (
+    <View style={{display: 'flex', flexDirection: 'column'}}>
+        <Text style={{
+            fontFamily: 'Open Sans Semi-Bold',
+            fontSize: fontSize,
+            color: '#FFFFFF',
+            marginBottom: -3,
+        }}>
+            Location{"\n"}
+            <Text style={{ letterSpacing: 1.2 }}>
+                {Math.abs(latitude).toFixed(4)}° {latitude >= 0 ? 'N' : 'S'}, {Math.abs(longitude).toFixed(4)}° {longitude >= 0 ? 'E' : 'W'}
+            </Text>
+        </Text>
+    </View>
 )

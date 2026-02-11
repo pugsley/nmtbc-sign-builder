@@ -1,6 +1,6 @@
 import {Document, Page, View, Text, StyleSheet} from '@react-pdf/renderer'
 import {SmallWayfindingSignData} from '../../App'
-import {mmToPt, getGradeColor, getArrowRotation, ArrowCircle} from '../shared/pdfUtils'
+import {mmToPt, getSmallWayfindingBackgroundColor, getArrowRotation, ArrowCircle, LocationCoordinates} from '../shared/pdfUtils'
 
 interface SmallWayfindingSignProps {
     signData: SmallWayfindingSignData
@@ -28,20 +28,36 @@ const styles = StyleSheet.create({
         padding: 28,
         height: '100%',
         display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+    },
+    topRow: {
+        display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-start',
+    },
+    textContainer: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
     },
     trailName: {
         fontFamily: 'Open Sans Bold',
         fontSize: 50,
         color: '#FFFFFF',
-        flex: 1,
+    },
+    activityDescription: {
+        fontFamily: 'Open Sans Semi-Bold',
+        fontSize: 24,
+        color: '#FFFFFF',
+        marginTop: 10,
     },
 })
 
 export function SmallWayfindingSign({signData}: SmallWayfindingSignProps) {
-    const backgroundColor = getGradeColor(signData.grade)
+    const backgroundColor = getSmallWayfindingBackgroundColor(signData.background)
     const arrowRotation = getArrowRotation(signData.arrowDirection)
 
     return (
@@ -50,13 +66,26 @@ export function SmallWayfindingSign({signData}: SmallWayfindingSignProps) {
                 <View style={styles.container}>
                     <View style={[styles.background, {backgroundColor}]}/>
                     <View style={styles.content}>
-                        {/* Trail Name */}
-                        <Text style={styles.trailName}>{signData.trailName}</Text>
+                        {/* Top Row: Trail Name/Description and Arrow */}
+                        <View style={styles.topRow}>
+                            {/* Left side: Trail Name and Activity Description */}
+                            <View style={styles.textContainer}>
+                                <Text style={styles.trailName}>{signData.trailName}</Text>
+                                {signData.activityDescription && (
+                                    <Text style={styles.activityDescription}>{signData.activityDescription}</Text>
+                                )}
+                            </View>
 
-                        {/* Arrow Circle */}
-                        <View style={{marginRight: 0}}>
-                            <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={50} />
+                            {/* Arrow Circle */}
+                            <View style={{marginRight: 0}}>
+                                <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={50} />
+                            </View>
                         </View>
+
+                        {/* Bottom: Location Coordinates (if provided) */}
+                        {signData.latitude !== undefined && signData.longitude !== undefined && (
+                            <LocationCoordinates latitude={signData.latitude} longitude={signData.longitude} fontSize={10} />
+                        )}
                     </View>
                 </View>
             </Page>
