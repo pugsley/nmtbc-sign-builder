@@ -1,6 +1,6 @@
 import {Document, Page, View, Text, StyleSheet, Image} from '@react-pdf/renderer'
 import {WayfindingSignData, LOGOS} from '../../App'
-import {mmToPt, getGradeColor, getArrowRotation, Arrow, Bike, Walker} from '../shared/pdfUtils'
+import {mmToPt, getGradeColor, getArrowRotation, ArrowCircle, Bike, Walker} from '../shared/pdfUtils'
 
 interface WayfindingSignProps {
     signData: WayfindingSignData
@@ -41,14 +41,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-end',
     },
-    arrowCircle: {
-        width: 315,
-        height: 315,
-        backgroundColor: '#FFFFFF',
-        borderRadius: 1000,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+    arrowCircleContainer: {
         marginBottom: 40,
         marginTop: 60,
         marginRight: 60,
@@ -136,8 +129,8 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
 
                         <View style={styles.topSection}>
                             {/* Arrow Circle */}
-                            <View style={styles.arrowCircle}>
-                                <Arrow color={backgroundColor} rotation={arrowRotation}/>
+                            <View style={styles.arrowCircleContainer}>
+                                <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={111} />
                             </View>
 
                             {/* Trail Name */}

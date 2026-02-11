@@ -59,8 +59,16 @@ export interface HardEasyPostData {
   bottomGrade: 1 | 2 | 3 | 4 | 5 | 6
 }
 
+// Small Wayfinding Sign Data Structure
+export interface SmallWayfindingSignData {
+  signType: 'smallwayfinding'
+  trailName: string
+  grade: 1 | 2 | 3 | 4 | 5 | 6
+  arrowDirection: 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
+}
+
 // Discriminated Union of all sign types
-export type SignData = WayfindingSignData | WarningPostData | HardEasyPostData
+export type SignData = WayfindingSignData | WarningPostData | HardEasyPostData | SmallWayfindingSignData
 
 export type SignType = SignData['signType']
 
@@ -98,11 +106,19 @@ export const defaultHardEasyPostData: HardEasyPostData = {
   bottomGrade: 5,
 }
 
-// Storage structure to hold all three sign types
+export const defaultSmallWayfindingData: SmallWayfindingSignData = {
+  signType: 'smallwayfinding',
+  trailName: 'Te Piki',
+  grade: 4,
+  arrowDirection: 'N',
+}
+
+// Storage structure to hold all sign types
 interface StoredSignData {
   wayfinding: WayfindingSignData
   warning: WarningPostData
   hardeasy: HardEasyPostData
+  smallwayfinding: SmallWayfindingSignData
   activeType: SignType
 }
 
@@ -110,6 +126,7 @@ const defaultStoredData: StoredSignData = {
   wayfinding: defaultWayfindingData,
   warning: defaultWarningPostData,
   hardeasy: defaultHardEasyPostData,
+  smallwayfinding: defaultSmallWayfindingData,
   activeType: 'wayfinding',
 }
 
@@ -135,7 +152,7 @@ const deserializeFromUrl = (): StoredSignData | null => {
     const parsed = JSON.parse(json)
 
     // Validate structure
-    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.activeType) {
+    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.smallwayfinding || !parsed.activeType) {
       return null
     }
 
@@ -155,7 +172,7 @@ const loadFromLocalStorage = (): StoredSignData | null => {
     const parsed = JSON.parse(stored)
 
     // Validate structure
-    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.activeType) {
+    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.smallwayfinding || !parsed.activeType) {
       return null
     }
 
@@ -253,6 +270,9 @@ function App() {
     } else if (signData.signType === 'warning') {
       const title = signData.title.toLowerCase().replace(/\s+/g, '-')
       filename = `${title}-warning-post.pdf`
+    } else if (signData.signType === 'smallwayfinding') {
+      const trailName = signData.trailName.toLowerCase().replace(/\s+/g, '-').replace(/\n/g, '-')
+      filename = `${trailName}-small-wayfinding-sign.pdf`
     } else {
       const topWord = signData.topWord.toLowerCase()
       const topDirection = signData.topDirection.toLowerCase()

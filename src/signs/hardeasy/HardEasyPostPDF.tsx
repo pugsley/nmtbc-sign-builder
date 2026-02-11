@@ -1,6 +1,6 @@
 import {Document, Page, View, Text, StyleSheet} from '@react-pdf/renderer'
 import {HardEasyPostData} from '../../App'
-import {mmToPt, getGradeColor, getArrowRotation, Arrow} from '../shared/pdfUtils'
+import {mmToPt, getGradeColor, getArrowRotation, ArrowCircle} from '../shared/pdfUtils'
 
 interface HardEasyPostProps {
     signData: HardEasyPostData
@@ -40,17 +40,10 @@ export function HardEasyPost({signData}: HardEasyPostProps) {
                     }}>
                         {/* Top Arrow */}
                         <View style={{
-                            width: mmToPt(70),
-                            height: mmToPt(70),
-                            backgroundColor: '#FFFFFF',
-                            borderRadius: 1000,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
                             marginBottom: 60,
                             marginTop: 60,
                         }}>
-                            <Arrow color={topColor} rotation={topArrowRotation} />
+                            <ArrowCircle backgroundColor={topColor} rotation={topArrowRotation} diameterMm={70} />
                         </View>
 
                         {/* Top Word */}
@@ -98,17 +91,10 @@ export function HardEasyPost({signData}: HardEasyPostProps) {
                     }}>
                         {/* Bottom Arrow */}
                         <View style={{
-                            width: mmToPt(70),
-                            height: mmToPt(70),
-                            backgroundColor: '#FFFFFF',
-                            borderRadius: 1000,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
                             marginBottom: 60,
                             marginTop: 60,
                         }}>
-                            <Arrow color={bottomColor} rotation={bottomArrowRotation} />
+                            <ArrowCircle backgroundColor={bottomColor} rotation={bottomArrowRotation} diameterMm={70} />
                         </View>
 
                         {/* Bottom Word */}

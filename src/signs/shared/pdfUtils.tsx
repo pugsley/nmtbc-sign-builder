@@ -1,4 +1,4 @@
-import {Font, Svg, Path} from '@react-pdf/renderer'
+import {Font, Svg, Path, View} from '@react-pdf/renderer'
 import {WayfindingSignData, WarningPostData} from '../../App'
 
 export const MM_TO_PT = 72 / 25.4;
@@ -58,8 +58,8 @@ export const getWarningColor = (symbol: WarningPostData['symbol']): string => {
 }
 
 // Shared Components
-export const Arrow = ({color, rotation}: { color: string; rotation: number }) => (
-    <Svg width="160" height="160" viewBox="0 0 100 100" style={{transform: `rotate(${rotation}deg)`}}>
+export const Arrow = ({color, rotation, size = 160}: { color: string; rotation: number; size?: number }) => (
+    <Svg width={size} height={size} viewBox="0 0 100 100" style={{transform: `rotate(${rotation}deg)`}}>
         {/* Arrow shaft */}
         <Path
             d="M 0 0 H 100"
@@ -84,6 +84,31 @@ export const Arrow = ({color, rotation}: { color: string; rotation: number }) =>
         />
     </Svg>
 )
+
+// Reusable Arrow Circle Component for PDF signs
+export const ArrowCircle = ({backgroundColor, rotation, diameterMm}: {
+    backgroundColor: string;
+    rotation: number;
+    diameterMm: number;
+}) => {
+    const diameterPt = mmToPt(diameterMm)
+    // Arrow size should be proportional to circle diameter (60% of diameter)
+    const arrowSize = diameterPt * 0.8
+
+    return (
+        <View style={{
+            width: diameterPt,
+            height: diameterPt,
+            backgroundColor: '#FFFFFF',
+            borderRadius: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+        }}>
+            <Arrow color={backgroundColor} rotation={rotation} size={arrowSize} />
+        </View>
+    )
+}
 
 export const Bike = ({color}: { color: string }) => (
     <Svg width="100" height="100" viewBox="0 0 640 640">

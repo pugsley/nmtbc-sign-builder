@@ -1,7 +1,8 @@
-import { SignData, defaultWayfindingData, defaultWarningPostData, defaultHardEasyPostData } from './App'
+import { SignData, defaultWayfindingData, defaultWarningPostData, defaultHardEasyPostData, defaultSmallWayfindingData } from './App'
 import {WayfindingSignForm} from './signs/wayfinding/WayfindingSignForm'
 import {WarningPostForm} from './signs/warning/WarningPostForm'
 import {HardEasyPostForm} from './signs/hardeasy/HardEasyPostForm'
+import {SmallWayfindingSignForm} from './signs/smallwayfinding/SmallWayfindingSignForm'
 import './SignForm.css'
 
 interface SignFormProps {
@@ -10,18 +11,20 @@ interface SignFormProps {
 }
 
 // Default data for sign type switching
-const getDefaultDataForType = (signType: 'wayfinding' | 'warning' | 'hardeasy'): SignData => {
+const getDefaultDataForType = (signType: 'wayfinding' | 'warning' | 'hardeasy' | 'smallwayfinding'): SignData => {
   if (signType === 'wayfinding') {
     return defaultWayfindingData
   } else if (signType === 'warning') {
     return defaultWarningPostData
-  } else {
+  } else if (signType === 'hardeasy') {
     return defaultHardEasyPostData
+  } else {
+    return defaultSmallWayfindingData
   }
 }
 
 export function SignForm({ signData, onUpdate }: SignFormProps) {
-  const handleSignTypeChange = (newType: 'wayfinding' | 'warning' | 'hardeasy') => {
+  const handleSignTypeChange = (newType: 'wayfinding' | 'warning' | 'hardeasy' | 'smallwayfinding') => {
     if (newType !== signData.signType) {
       onUpdate(getDefaultDataForType(newType))
     }
@@ -38,11 +41,12 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
         <select
           id="signType"
           value={signData.signType}
-          onChange={(e) => handleSignTypeChange(e.target.value as 'wayfinding' | 'warning' | 'hardeasy')}
+          onChange={(e) => handleSignTypeChange(e.target.value as 'wayfinding' | 'warning' | 'hardeasy' | 'smallwayfinding')}
         >
           <option value="wayfinding">Wayfinding Sign</option>
-          <option value="warning">Warning Post</option>
+          <option value="smallwayfinding">Small Wayfinding Sign</option>
           <option value="hardeasy">Hard/Easy Post</option>
+          <option value="warning">Warning Post</option>
         </select>
       </div>
 
@@ -57,6 +61,10 @@ export function SignForm({ signData, onUpdate }: SignFormProps) {
 
       {signData.signType === 'hardeasy' && (
         <HardEasyPostForm signData={signData} onChange={handleChange} />
+      )}
+
+      {signData.signType === 'smallwayfinding' && (
+        <SmallWayfindingSignForm signData={signData} onChange={handleChange} />
       )}
     </form>
   )

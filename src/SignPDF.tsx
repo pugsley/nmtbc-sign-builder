@@ -2,6 +2,7 @@ import {SignData} from './App'
 import {WayfindingSign} from './signs/wayfinding/WayfindingSignPDF'
 import {WarningPost} from './signs/warning/WarningPostPDF'
 import {HardEasyPost} from './signs/hardeasy/HardEasyPostPDF'
+import {SmallWayfindingSign} from './signs/smallwayfinding/SmallWayfindingSignPDF'
 
 interface SignPDFProps {
     signData: SignData
@@ -16,6 +17,8 @@ export function SignPDF({signData}: SignPDFProps) {
             return <WarningPost signData={signData} />
         case 'hardeasy':
             return <HardEasyPost signData={signData} />
+        case 'smallwayfinding':
+            return <SmallWayfindingSign signData={signData} />
         default:
             return <WayfindingSign signData={signData} />
     }
