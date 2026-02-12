@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center',
+        alignItems: 'flex-start',
         gap: 30,
     },
     textColumn: {
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         wordBreak: 'keep-all',
         lineHeight: 1.2,
-        marginTop: -10, // Compensate for the space above the first line of text
+        marginTop: 0, // Compensate for the space above the first line of text
     },
     activityDescription: {
         fontFamily: 'Open Sans Semi-Bold',
@@ -57,11 +57,33 @@ const styles = StyleSheet.create({
         left: 40,
         bottom: 20,
     },
+    printGuides: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        border: '2px solid #FF1493',
+        borderRadius: 20,
+    },
+    boltHole: {
+        position: 'absolute',
+        width: mmToPt(5),
+        height: mmToPt(5),
+        backgroundColor: '#FF1493',
+        borderRadius: 1000,
+    },
 })
 
 export function SmallWayfindingSign({signData}: SmallWayfindingSignProps) {
     const backgroundColor = getSmallWayfindingBackgroundColor(signData.background)
     const arrowRotation = signData.arrowDirection ? getArrowRotation(signData.arrowDirection) : 0
+
+    // Calculate bolt hole positions (centered, 250pt apart horizontally)
+    const centerX = mmToPt(120) // Center of 240mm width
+    const centerY = mmToPt(40) // Center of 80mm height
+    const holeRadius = mmToPt(2.5) // 5mm diameter circles
+    const spacing = 93
 
     return (
         <Document>
@@ -88,6 +110,16 @@ export function SmallWayfindingSign({signData}: SmallWayfindingSignProps) {
                         <View style={styles.location}>
                             <LocationCoordinates latitude={signData.latitude} longitude={signData.longitude} fontSize={10} singleLine={true} />
                         </View>
+                    )}
+
+                    {/* Print Guides */}
+                    {signData.printGuides && (
+                        <>
+                            <View style={styles.printGuides} />
+                            {/* Bolt holes */}
+                            <View style={[styles.boltHole, {left: centerX - spacing - holeRadius, top: centerY - holeRadius}]} />
+                            <View style={[styles.boltHole, {left: centerX + spacing - holeRadius, top: centerY - holeRadius}]} />
+                        </>
                     )}
                 </View>
             </Page>

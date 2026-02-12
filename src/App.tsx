@@ -76,6 +76,7 @@ export interface SmallWayfindingSignData {
   activityDescription: string
   latitude?: number
   longitude?: number
+  printGuides: boolean
 }
 
 // Discriminated Union of all sign types
@@ -125,6 +126,7 @@ export const defaultSmallWayfindingData: SmallWayfindingSignData = {
   activityDescription: '',
   latitude: -41.2971,
   longitude: 174.7222,
+  printGuides: false,
 }
 
 // Storage structure to hold all sign types

@@ -85,6 +85,17 @@ export function SmallWayfindingSignForm({signData, onChange}: SmallWayfindingSig
                     />
                 </div>
             </div>
+
+            <div className="form-group">
+                <label className="checkbox-label">
+                    <input
+                        type="checkbox"
+                        checked={signData.printGuides}
+                        onChange={(e) => onChange('printGuides', e.target.checked)}
+                    />
+                    <span>Show Print Guides</span>
+                </label>
+            </div>
         </>
     )
 }
