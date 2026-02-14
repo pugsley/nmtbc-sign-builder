@@ -40,7 +40,6 @@ export interface WayfindingSignData {
   latitude: number
   longitude: number
   arrowDirection: ArrowDirection
-  logo: string | null
   bike: boolean
   walk: boolean
   logoToggles: Record<string, boolean>
@@ -95,7 +94,6 @@ export const defaultWayfindingData: WayfindingSignData = {
   latitude: -41.2971,
   longitude: 174.7222,
   arrowDirection: 'N',
-  logo: null,
   bike: true,
   walk: true,
   logoToggles: Object.fromEntries(LOGOS.map(logo => [logo.id, true])),
@@ -131,48 +129,51 @@ export const defaultSmallWayfindingData: SmallWayfindingSignData = {
 
 // Storage structure to hold all sign types
 interface StoredSignData {
-  wayfinding: WayfindingSignData
-  warning: WarningPostData
-  hardeasy: HardEasyPostData
-  smallwayfinding: SmallWayfindingSignData
   activeType: SignType
+  data: {
+    wayfinding: WayfindingSignData
+    warning: WarningPostData
+    hardeasy: HardEasyPostData
+    smallwayfinding: SmallWayfindingSignData
+  }
 }
 
 const defaultStoredData: StoredSignData = {
-  wayfinding: defaultWayfindingData,
-  warning: defaultWarningPostData,
-  hardeasy: defaultHardEasyPostData,
-  smallwayfinding: defaultSmallWayfindingData,
   activeType: 'wayfinding',
+  data: {
+    wayfinding: defaultWayfindingData,
+    warning: defaultWarningPostData,
+    hardeasy: defaultHardEasyPostData,
+    smallwayfinding: defaultSmallWayfindingData,
+  },
 }
 
-// Serialize storedData to URL parameter
-const serializeToUrl = (data: StoredSignData): string => {
+// Serialize only the active sign type to URL parameter
+const serializeToUrl = (signData: SignData): string => {
   try {
-    const json = JSON.stringify(data)
-    return encodeURIComponent(json)
+    return `data=${encodeURIComponent(JSON.stringify(signData))}`
   } catch (error) {
     console.error('Error encoding to URL:', error)
     return ''
   }
 }
 
-// Deserialize from URL parameter
-const deserializeFromUrl = (): StoredSignData | null => {
+// Deserialize from URL parameter - returns only the active sign type data
+const deserializeFromUrl = (): SignData | null => {
   try {
     const params = new URLSearchParams(window.location.search)
-    const encoded = params.get('data')
-    if (!encoded) return null
+    const dataStr = params.get('data')
 
-    const json = decodeURIComponent(encoded)
-    const parsed = JSON.parse(json)
+    if (!dataStr) return null
 
-    // Validate structure
-    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.smallwayfinding || !parsed.activeType) {
+    const data = JSON.parse(dataStr) as SignData
+
+    // Validate that it has a signType
+    if (!data.signType) {
       return null
     }
 
-    return parsed as StoredSignData
+    return data
   } catch (error) {
     console.error('Error decoding from URL:', error)
     return null
@@ -188,7 +189,9 @@ const loadFromLocalStorage = (): StoredSignData | null => {
     const parsed = JSON.parse(stored)
 
     // Validate structure
-    if (!parsed || !parsed.wayfinding || !parsed.warning || !parsed.hardeasy || !parsed.smallwayfinding || !parsed.activeType) {
+    if (!parsed || !parsed.activeType || !parsed.data ||
+        !parsed.data.wayfinding || !parsed.data.warning ||
+        !parsed.data.hardeasy || !parsed.data.smallwayfinding) {
       return null
     }
 
@@ -201,16 +204,22 @@ const loadFromLocalStorage = (): StoredSignData | null => {
 
 // Load initial data with priority: URL > localStorage > defaults
 const loadInitialData = (): StoredSignData => {
-  // Try URL first
+  // Start with localStorage or defaults
+  const storedData = loadFromLocalStorage() || defaultStoredData
+
+  // If URL has data, merge it in and set as active type
   const urlData = deserializeFromUrl()
-  if (urlData) return urlData
+  if (urlData) {
+    return {
+      activeType: urlData.signType,
+      data: {
+        ...storedData.data,
+        [urlData.signType]: urlData,
+      },
+    }
+  }
 
-  // Then localStorage
-  const storedData = loadFromLocalStorage()
-  if (storedData) return storedData
-
-  // Finally defaults
-  return defaultStoredData
+  return storedData
 }
 
 function App() {
@@ -223,7 +232,7 @@ function App() {
   const [lastActiveType, setLastActiveType] = useState<SignType>(storedData.activeType)
 
   // Get the current sign data based on active type
-  const signData = storedData[storedData.activeType]
+  const signData = storedData.data[storedData.activeType]
 
   // Update handler that saves to the correct slot
   const handleUpdate = (data: SignData) => {
@@ -243,8 +252,11 @@ function App() {
       // Normal field update - save the data to the correct slot
       return {
         ...prev,
-        [data.signType]: data,
         activeType: data.signType,
+        data: {
+          ...prev.data,
+          [data.signType]: data,
+        },
       }
     })
   }
@@ -252,16 +264,16 @@ function App() {
   // Save all sign data to localStorage and URL whenever it changes
   useEffect(() => {
     try {
-      // Save to localStorage
+      // Save to localStorage (all sign types)
       localStorage.setItem(STORAGE_KEY, JSON.stringify(storedData))
 
       // Only update URL if we didn't just switch types (URL was already cleared)
       const justSwitchedTypes = storedData.activeType !== lastActiveType
       if (!justSwitchedTypes) {
-        // Update URL with new data
-        const encoded = serializeToUrl(storedData)
-        if (encoded) {
-          const newUrl = `${window.location.pathname}?data=${encoded}`
+        // Update URL with only the active sign type data
+        const params = serializeToUrl(storedData.data[storedData.activeType])
+        if (params) {
+          const newUrl = `${window.location.pathname}?${params}`
           window.history.replaceState({}, '', newUrl)
         }
       } else {
