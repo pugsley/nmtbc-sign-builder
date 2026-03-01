@@ -18,16 +18,16 @@ export interface LogoDefinition {
 }
 
 export const LOGOS: LogoDefinition[] = [
-  { id: 'ncc', name: 'NCC', image: nccLogo },
-  { id: 'koata', name: 'Koata', image: koataLogo },
-  { id: 'nmtbc', name: 'NMTBC', image: nmtbcLogo },
+    {id: 'ncc', name: 'NCC', image: nccLogo},
+    {id: 'koata', name: 'Koata', image: koataLogo},
+    {id: 'nmtbc', name: 'NMTBC', image: nmtbcLogo},
 ]
 
 // Common Types
 export type Grade = 1 | 2 | 3 | 4 | 5 | 6
 export type ArrowDirection = 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
 export type WarningSymbol = 'danger' | 'warning'
-export type HardEasyWord = 'HARD' | 'EASY'
+export type HardEasyWord = string
 
 // Wayfinding Sign Data Structure
 export interface WayfindingSignData {
@@ -39,7 +39,7 @@ export interface WayfindingSignData {
   distanceType: string
   latitude: number
   longitude: number
-  arrowDirection: ArrowDirection
+  arrowDirection?: ArrowDirection
   bike: boolean
   walk: boolean
   logoToggles: Record<string, boolean>

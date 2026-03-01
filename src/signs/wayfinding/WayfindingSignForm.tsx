@@ -21,6 +21,7 @@ export function WayfindingSignForm({signData, onChange}: WayfindingSignFormProps
                     label="Arrow Direction"
                     value={signData.arrowDirection}
                     onChange={(direction) => onChange('arrowDirection', direction)}
+                    optional={true}
                 />
             </div>
 

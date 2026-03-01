@@ -13,14 +13,13 @@ export function HardEasyPostForm({signData, onChange}: HardEasyPostFormProps) {
             <div className="form-row">
                 <div className="form-group">
                     <label htmlFor="topWord">Top Word</label>
-                    <select
+                    <input
+                        type="text"
                         id="topWord"
                         value={signData.topWord}
-                        onChange={(e) => onChange('topWord', e.target.value)}
-                    >
-                        <option value="EASY">EASY</option>
-                        <option value="HARD">HARD</option>
-                    </select>
+                        onChange={(e) => onChange('topWord', e.target.value.toUpperCase())}
+                        placeholder="e.g., HARD"
+                    />
                 </div>
 
                 <GradeSelector
@@ -41,14 +40,13 @@ export function HardEasyPostForm({signData, onChange}: HardEasyPostFormProps) {
             <div className="form-row">
                 <div className="form-group">
                     <label htmlFor="bottomWord">Bottom Word</label>
-                    <select
+                    <input
+                        type="text"
                         id="bottomWord"
                         value={signData.bottomWord}
-                        onChange={(e) => onChange('bottomWord', e.target.value)}
-                    >
-                        <option value="EASY">EASY</option>
-                        <option value="HARD">HARD</option>
-                    </select>
+                        onChange={(e) => onChange('bottomWord', e.target.value.toUpperCase())}
+                        placeholder="e.g., EASY"
+                    />
                 </div>
 
                 <GradeSelector

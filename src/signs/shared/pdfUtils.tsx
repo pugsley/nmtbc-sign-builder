@@ -10,6 +10,24 @@ export const mmToPt = (mm: number): number => mm * MM_TO_PT;
 export const WARNING_COLOR = '#ECBA42'  // Yellow
 export const DANGER_COLOR = '#C63823'   // Red
 
+const COLOURS: Record<Grade, string> = {
+    1: '#8BBF4B', // Light Green
+    2: '#45A525', // Bright Green
+    3: '#47ACEC', // Cyan
+    4: '#1538A6', // Deep Blue
+    5: '#27292E', // Dark Gray
+    6: '#C63823', // Red-Orange
+}
+
+const ROTATION: Record<Grade, number> = {
+    1: 0,
+    2: 0,
+    3: 0,
+    4: 5,
+    5: 10,
+    6: 15,
+}
+
 // Register Fonts
 Font.register({
     family: 'Open Sans Bold',
@@ -28,15 +46,11 @@ Font.register({
 
 // Utility Functions
 export const getGradeColor = (grade: Grade): string => {
-    const colors: Record<Grade, string> = {
-        1: '#8BBF4B', // Light Green
-        2: '#45A525', // Bright Green
-        3: '#47ACEC', // Cyan
-        4: '#1538A6', // Deep Blue
-        5: '#27292E', // Dark Gray
-        6: '#C63823', // Red-Orange
-    }
-    return colors[grade]
+    return COLOURS[grade]
+}
+
+export const getBikeRotation = (grade: Grade): number => {
+    return ROTATION[grade]
 }
 
 export const getArrowRotation = (direction: ArrowDirection): number => {
@@ -121,7 +135,7 @@ export const ArrowCircle = ({backgroundColor, rotation, diameterMm}: {
             alignItems: 'center',
             justifyContent: 'center',
         }}>
-            <Arrow color={backgroundColor} rotation={rotation} size={arrowSize} />
+            <Arrow color={backgroundColor} rotation={rotation} size={arrowSize}/>
         </View>
     )
 }
@@ -149,6 +163,70 @@ export const Bike = ({color}: { color: string }) => (
         />
     </Svg>
 )
+
+
+export const MountainBike = ({rotation}: { rotation: number }) => {
+    let marginTop = 0
+    let marginLeft = 0
+    if (rotation >= 15) {
+        marginLeft = 8
+        marginTop = -21
+    } else if (rotation >= 10) {
+        marginLeft = 5
+        marginTop = -17
+    }
+
+    return (
+        <Svg width={90} viewBox="0 0 129 118" style={{transform: `rotate(${rotation}deg)`, marginTop: marginTop, marginLeft: marginLeft}}>
+            <Path
+                d="M64.2329 93V67.5L36.2329 48L67.2329 35L84 43L96.7329 48"
+                stroke="white"
+                strokeWidth={14}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+            />
+
+            <Path
+                d="M27 67.5C39.9787 67.5 50.5 78.0213 50.5 91C50.5 103.979 39.9787 114.5 27 114.5C14.0213 114.5 3.5 103.979 3.5 91C3.5 78.0213 14.0213 67.5 27 67.5Z"
+                stroke="white"
+                strokeWidth={7}
+                fill="none"
+            />
+
+            {/* circle cx="101.233" cy="91" r="23.5" */}
+            <Path
+                d="M124.733 91
+           A23.5 23.5 0 1 0 77.733 91
+           A23.5 23.5 0 1 0 124.733 91"
+                stroke="white"
+                strokeWidth={7}
+                fill="none"
+            />
+
+            <Path
+                d="M90.0896 18.0363
+           A9.5 9.5 0 1 0 71.0896 18.0363
+           A9.5 9.5 0 1 0 90.0896 18.0363"
+                fill="white"
+                stroke="none"
+            />
+
+            <Path
+                d="M68.4338 10.8367C67.5441 16.199 67.6562 19.0849 68.6647 24.0728C79.137 27.5581 84.9086 30.1383 95.047 35.7763C98.0398 32.9652 99.8686 28.496 99.6336 26.9324C99.3986 25.3688 98.0067 24.6187 98.0067 24.6187C95.7316 25.5193 94.6656 25.9932 93.0584 26.8016C89.6366 25.2125 88.0269 24.1666 85.7781 21.98C85.0805 19.3476 85.2341 18.1363 86.7224 16.5617C89.114 14.5492 91.1846 13.8687 95.4621 13.0095L94.4994 9.79646L99.276 8.59877C102.301 7.83884 102.831 7.12876 103.325 5.75167C96.4449 5.28525 92.5393 4.69118 85.5064 3.15379C76.5283 3.04583 72.7101 4.62083 68.4338 10.8367Z"
+                fill="white"
+                stroke="white"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+
+            <Path
+                d="M56 64.5C60.5 60.5 61.6605 58.5561 66.5 59.1473C72.2667 62.859 73.1842 66.655 72 74.1473C67.0411 78.6612 66.0244 73.1733 60.5 72C60.5 72 51.5 68.5 56 64.5Z"
+                fill="white"
+            />
+        </Svg>
+    )
+}
 
 export const Walker = ({color}: { color: string }) => (
     <Svg width="80" height="80" viewBox="0 0 640 640">
@@ -189,7 +267,7 @@ export const LocationCoordinates = ({latitude, longitude, fontSize = 12, singleL
             marginBottom: -3,
         }}>
             Location{singleLine ? '   ' : "\n"}
-            <Text style={{ letterSpacing: 1.2 }}>
+            <Text style={{letterSpacing: 1.2}}>
                 {Math.abs(latitude).toFixed(4)}° {latitude >= 0 ? 'N' : 'S'}, {Math.abs(longitude).toFixed(4)}° {longitude >= 0 ? 'E' : 'W'}
             </Text>
         </Text>

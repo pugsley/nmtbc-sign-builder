@@ -1,6 +1,16 @@
 import {Document, Page, View, Text, StyleSheet, Image} from '@react-pdf/renderer'
 import {WayfindingSignData, LOGOS} from '../../App'
-import {mmToPt, getGradeColor, getArrowRotation, ArrowCircle, Bike, Walker, LocationCoordinates} from '../shared/pdfUtils'
+import {
+    mmToPt,
+    getGradeColor,
+    getArrowRotation,
+    ArrowCircle,
+    Bike,
+    MountainBike,
+    Walker,
+    LocationCoordinates,
+    getBikeRotation
+} from '../shared/pdfUtils'
 
 interface WayfindingSignProps {
     signData: WayfindingSignData
@@ -42,6 +52,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
     },
     arrowCircleContainer: {
+        height: mmToPt(111),
         marginBottom: 40,
         marginTop: 60,
         marginRight: 60,
@@ -108,7 +119,7 @@ const styles = StyleSheet.create({
 
 export function WayfindingSign({signData}: WayfindingSignProps) {
     const backgroundColor = getGradeColor(signData.grade)
-    const arrowRotation = getArrowRotation(signData.arrowDirection)
+    const arrowRotation = signData.arrowDirection ? getArrowRotation(signData.arrowDirection) : 0
 
     return (
         <Document>
@@ -118,9 +129,11 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
                     <View style={styles.content}>
 
                         <View style={styles.topSection}>
-                            {/* Arrow Circle */}
+                            {/* Arrow Circle - always reserve space to keep layout stable */}
                             <View style={styles.arrowCircleContainer}>
-                                <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={111} />
+                                {signData.arrowDirection && (
+                                    <ArrowCircle backgroundColor={backgroundColor} rotation={arrowRotation} diameterMm={111} />
+                                )}
                             </View>
 
                             {/* Trail Name */}
@@ -139,7 +152,9 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
                             {/* Icons and Distance - aligned to bottom of middle */}
                             <View style={styles.gradeSection}>
                                 <View style={styles.icons}>
-                                    {signData.bike && <Bike color="#FFFFFF" />}
+                                    { (signData.grade === 5 ||  signData.grade == 6) ? (<MountainBike rotation={getBikeRotation(signData.grade)} />) : (
+                                        <Bike color="#ffffff"/>
+                                    )}
                                     {signData.bike && signData.walk && <Text style={styles.plusSign}>+</Text>}
                                     {signData.walk && <Walker color="#FFFFFF" />}
                                 </View>
