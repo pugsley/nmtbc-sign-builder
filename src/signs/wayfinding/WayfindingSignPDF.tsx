@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
         fontSize: 50,
         color: '#FFFFFF',
         marginBottom: 40,
+        minWidth: 120,
     },
     distanceText: {
         fontFamily: 'Open Sans Semi-Bold',
