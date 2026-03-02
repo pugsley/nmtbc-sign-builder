@@ -130,6 +130,9 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
     const backgroundColor = getGradeColor(signData.grade)
     const arrowRotation = signData.arrowDirection ? getArrowRotation(signData.arrowDirection) : 0
 
+    const modifier = signData.bikeMode === 'uphill' ? -1 : 1
+    const rotation = signData.bikeMode === 'twoway' ? 0 : modifier * getBikeRotation(signData.grade)
+
     return (
         <Document>
             <Page size={[mmToPt(240), mmToPt(480)]} orientation="portrait" style={styles.page}>
@@ -161,9 +164,8 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
                             {/* Icons and Distance - aligned to bottom of middle */}
                             <View style={styles.gradeSection}>
                                 <View style={styles.icons}>
-                                    {(signData.bikeMode === 'downhill' && [4, 5, 6].indexOf(signData.grade) !== -1) && <MountainBike rotation={getBikeRotation(signData.grade)} />}
-                                    {(signData.bikeMode === 'uphill' || [1, 2, 3].indexOf(signData.grade) !== -1) && <Bike color="#FFFFFF" rotation={-getBikeRotation(signData.grade)} />}
-                                    {signData.bikeMode === 'twoway' && <Bike color="#FFFFFF" />}
+                                    {[1, 2, 3].indexOf(signData.grade) !== -1 && <Bike color="#FFFFFF" rotation={rotation} />}
+                                    {[4, 5, 6].indexOf(signData.grade) !== -1 && <MountainBike rotation={rotation} />}
                                     {signData.walk ? <Text style={styles.plusSign}>+</Text> : <Text style={styles.plusSign}> </Text>}
                                     {signData.walk ? <Walker /> : <NoWalking />}
                                 </View>
