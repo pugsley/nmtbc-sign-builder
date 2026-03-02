@@ -172,6 +172,11 @@ const deserializeFromUrl = (): SignData | null => {
       return null
     }
 
+    // Migrate wayfinding signs that predate bikeMode
+    if (data.signType === 'wayfinding' && !data.bikeMode) {
+      data.bikeMode = 'downhill'
+    }
+
     return data
   } catch (error) {
     console.error('Error decoding from URL:', error)
