@@ -66,7 +66,7 @@ export function WayfindingSignForm({signData, onChange}: WayfindingSignFormProps
                     >
                         <option value="downhill">Downhill</option>
                         <option value="uphill">Uphill</option>
-                        <option value="twoway">Two Way</option>
+                        <option value="twoway">Two-Way</option>
                     </select>
                 </div>
 

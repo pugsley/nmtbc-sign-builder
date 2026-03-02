@@ -120,9 +120,9 @@ const styles = StyleSheet.create({
 })
 
 function getActivityDescription(bikeMode: WayfindingSignData['bikeMode'], walk: boolean): string {
-    if (bikeMode === 'twoway' && walk) return 'Two way biking & walking'
-    const bikeLine = bikeMode === 'downhill' ? 'Downhill biking' : bikeMode === 'uphill' ? 'Uphill biking' : 'Two way biking'
-    return walk ? `${bikeLine}\nTwo way walking` : bikeLine
+    if (bikeMode === 'twoway' && walk) return 'Two-Way Biking & Walking'
+    const bikeLine = bikeMode === 'downhill' ? 'Downhill biking' : bikeMode === 'uphill' ? 'Uphill biking' : 'Two-Way Biking'
+    return walk ? `${bikeLine}\nTwo-Way walking` : bikeLine
 }
 
 export function WayfindingSign({signData}: WayfindingSignProps) {
