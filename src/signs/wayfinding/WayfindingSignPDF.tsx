@@ -7,9 +7,10 @@ import {
     ArrowCircle,
     Bike,
     MountainBike,
-    Walker,
     LocationCoordinates,
-    getBikeRotation
+    getBikeRotation,
+    NoWalking,
+    Walker
 } from '../shared/pdfUtils'
 
 interface WayfindingSignProps {
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Open Sans Semi-Bold',
         fontSize: 40,
         color: '#FFFFFF',
+        marginTop: 10,
     },
     icons: {
         display: 'flex',
@@ -117,6 +119,12 @@ const styles = StyleSheet.create({
     }
 })
 
+function getActivityDescription(bikeMode: WayfindingSignData['bikeMode'], walk: boolean): string {
+    if (bikeMode === 'twoway' && walk) return 'Two way biking & walking'
+    const bikeLine = bikeMode === 'downhill' ? 'Downhill biking' : bikeMode === 'uphill' ? 'Uphill biking' : 'Two way biking'
+    return walk ? `${bikeLine}\nTwo way walking` : bikeLine
+}
+
 export function WayfindingSign({signData}: WayfindingSignProps) {
     const backgroundColor = getGradeColor(signData.grade)
     const arrowRotation = signData.arrowDirection ? getArrowRotation(signData.arrowDirection) : 0
@@ -152,16 +160,16 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
                             {/* Icons and Distance - aligned to bottom of middle */}
                             <View style={styles.gradeSection}>
                                 <View style={styles.icons}>
-                                    { (signData.grade === 5 ||  signData.grade == 6) ? (<MountainBike rotation={getBikeRotation(signData.grade)} />) : (
-                                        <Bike color="#ffffff"/>
-                                    )}
-                                    {signData.bike && signData.walk && <Text style={styles.plusSign}>+</Text>}
-                                    {signData.walk && <Walker color="#FFFFFF" />}
+                                    {(signData.bikeMode === 'downhill' && [4, 5, 6].indexOf(signData.grade) !== -1) && <MountainBike rotation={getBikeRotation(signData.grade)} />}
+                                    {(signData.bikeMode === 'uphill' || [1, 2, 3].indexOf(signData.grade) !== -1) && <Bike color="#FFFFFF" rotation={-getBikeRotation(signData.grade)} />}
+                                    {signData.bikeMode === 'twoway' && <Bike color="#FFFFFF" />}
+                                    {signData.walk ? <Text style={styles.plusSign}>+</Text> : <Text style={styles.plusSign}> </Text>}
+                                    {signData.walk ? <Walker /> : <NoWalking />}
                                 </View>
 
-                                {/* Distance Type */}
+                                {/* Activity Description */}
                                 <Text style={styles.distanceText}>
-                                    {signData.distanceType}
+                                    {getActivityDescription(signData.bikeMode, signData.walk)}
                                 </Text>
                             </View>
                         </View>

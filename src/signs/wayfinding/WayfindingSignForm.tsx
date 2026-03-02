@@ -1,4 +1,4 @@
-import {WayfindingSignData, LOGOS} from '../../App'
+import {WayfindingSignData, LOGOS, BikeMode} from '../../App'
 import {TrailNameInput, GradeSelector, ArrowDirectionSelector} from '../shared/formComponents'
 
 interface WayfindingSignFormProps {
@@ -56,37 +56,33 @@ export function WayfindingSignForm({signData, onChange}: WayfindingSignFormProps
                 </div>
             </div>
 
-            <div className="form-group">
-                <label>Activity Icons</label>
-                <div className="checkbox-group">
-                    <label className="checkbox-label">
-                        <input
-                            type="checkbox"
-                            checked={signData.bike}
-                            onChange={(e) => onChange('bike', e.target.checked)}
-                        />
-                        <span>Bike</span>
-                    </label>
-                    <label className="checkbox-label">
-                        <input
-                            type="checkbox"
-                            checked={signData.walk}
-                            onChange={(e) => onChange('walk', e.target.checked)}
-                        />
-                        <span>Walk</span>
-                    </label>
+            <div className="form-row">
+                <div className="form-group">
+                    <label htmlFor="bikeMode">Bike</label>
+                    <select
+                        id="bikeMode"
+                        value={signData.bikeMode}
+                        onChange={(e) => onChange('bikeMode', e.target.value as BikeMode)}
+                    >
+                        <option value="downhill">Downhill</option>
+                        <option value="uphill">Uphill</option>
+                        <option value="twoway">Two Way</option>
+                    </select>
                 </div>
-            </div>
 
-            <div className="form-group">
-                <label htmlFor="distanceType">Activity Description</label>
-                <textarea
-                    id="distanceType"
-                    value={signData.distanceType}
-                    onChange={(e) => onChange('distanceType', e.target.value)}
-                    placeholder="e.g., One Way"
-                    rows={2}
-                />
+                <div className="form-group">
+                    <label>Walking</label>
+                    <div className="checkbox-group" style={{paddingTop: '8px'}}>
+                        <label className="checkbox-label">
+                            <input
+                                type="checkbox"
+                                checked={signData.walk}
+                                onChange={(e) => onChange('walk', e.target.checked)}
+                            />
+                            <span>Walking allowed</span>
+                        </label>
+                    </div>
+                </div>
             </div>
 
             <div className="form-row">

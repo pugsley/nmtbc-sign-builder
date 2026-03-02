@@ -28,6 +28,7 @@ export type Grade = 1 | 2 | 3 | 4 | 5 | 6
 export type ArrowDirection = 'N' | 'NE' | 'E' | 'SE' | 'S' | 'SW' | 'W' | 'NW'
 export type WarningSymbol = 'danger' | 'warning'
 export type HardEasyWord = string
+export type BikeMode = 'downhill' | 'uphill' | 'twoway'
 
 // Wayfinding Sign Data Structure
 export interface WayfindingSignData {
@@ -36,11 +37,10 @@ export interface WayfindingSignData {
   grade: Grade
   gradeNote: string
   distance: string
-  distanceType: string
   latitude: number
   longitude: number
   arrowDirection?: ArrowDirection
-  bike: boolean
+  bikeMode: BikeMode
   walk: boolean
   logoToggles: Record<string, boolean>
 }
@@ -90,12 +90,11 @@ export const defaultWayfindingData: WayfindingSignData = {
   grade: 4,
   gradeNote: 'Climb',
   distance: '1.2 km',
-  distanceType: 'Uphill biking (priority)\nTwo way walking',
   latitude: -41.2971,
   longitude: 174.7222,
   arrowDirection: 'N',
-  bike: true,
-  walk: true,
+  bikeMode: 'downhill',
+  walk: false,
   logoToggles: Object.fromEntries(LOGOS.map(logo => [logo.id, true])),
 }
 
