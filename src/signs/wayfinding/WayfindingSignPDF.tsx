@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     },
     trailName: {
         fontFamily: 'Open Sans Bold',
-        fontSize: 100,
+        fontSize: 95,
         lineHeight: 1.1,
         color: '#FFFFFF',
         marginBottom: 60,
@@ -153,7 +153,7 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
 
                             {/* Grade */}
                             <View style={styles.gradeTextSection}>
-                                <Text style={styles.gradeText}>Grade {signData.grade}</Text>
+                                <Text style={styles.gradeText}>{GRADE_TO_TEXT[signData.grade]}</Text>
                                 <Text style={styles.gradeText}>{signData.gradeNote}</Text>
                                 <Text style={styles.gradeText}>{signData.distance}</Text>
                             </View>
