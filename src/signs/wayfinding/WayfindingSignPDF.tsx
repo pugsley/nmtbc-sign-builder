@@ -6,9 +6,7 @@ import {
     getArrowRotation,
     ArrowCircle,
     Bike,
-    MountainBike,
     LocationCoordinates,
-    getBikeRotation,
     NoWalking,
     Walker
 } from '../shared/pdfUtils'
@@ -133,8 +131,8 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
     const backgroundColor = getGradeColor(signData.grade)
     const arrowRotation = signData.arrowDirection ? getArrowRotation(signData.arrowDirection) : 0
 
-    const modifier = signData.bikeMode === 'uphill' ? -1 : 1
-    const rotation = signData.bikeMode === 'twoway' ? 0 : modifier * getBikeRotation(signData.grade)
+    // const modifier = signData.bikeMode === 'uphill' ? -1 : 1
+    // const rotation = signData.bikeMode === 'twoway' ? 0 : modifier * getBikeRotation(signData.grade)
 
     return (
         <Document>
