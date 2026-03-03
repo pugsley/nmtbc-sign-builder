@@ -122,7 +122,10 @@ const styles = StyleSheet.create({
 
 function getActivityDescription(bikeMode: WayfindingSignData['bikeMode'], walk: boolean): string {
     if (bikeMode === 'twoway' && walk) return 'Two-Way Biking & Walking'
-    const bikeLine = bikeMode === 'downhill' ? 'Downhill biking' : bikeMode === 'uphill' ? 'Uphill biking' : 'Two-Way Biking'
+    let bikeLine = bikeMode === 'downhill' ? 'Downhill biking' : bikeMode === 'uphill' ? 'Uphill biking' : 'Two-Way Biking'
+    if (!walk) {
+       bikeLine = `${bikeLine} only`
+    }
     return walk ? `${bikeLine}\nTwo-Way walking` : bikeLine
 }
 
@@ -153,7 +156,7 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
 
                             {/* Grade */}
                             <View style={styles.gradeTextSection}>
-                                <Text style={styles.gradeText}>{GRADE_TO_TEXT[signData.grade]}</Text>
+                                <Text style={styles.gradeText}>Grade {signData.grade}</Text>
                                 <Text style={styles.gradeText}>{signData.gradeNote}</Text>
                                 <Text style={styles.gradeText}>{signData.distance}</Text>
                             </View>
@@ -164,8 +167,9 @@ export function WayfindingSign({signData}: WayfindingSignProps) {
                             {/* Icons and Distance - aligned to bottom of middle */}
                             <View style={styles.gradeSection}>
                                 <View style={styles.icons}>
-                                    {[1, 2, 3].indexOf(signData.grade) !== -1 && <Bike color="#FFFFFF" rotation={rotation} />}
-                                    {[4, 5, 6].indexOf(signData.grade) !== -1 && <MountainBike rotation={rotation} />}
+                                    <Bike color="#FFFFFF" rotation={0} />
+                                    {/*{[1, 2, 3].indexOf(signData.grade) !== -1 && <Bike color="#FFFFFF" rotation={rotation} />}*/}
+                                    {/*{[4, 5, 6].indexOf(signData.grade) !== -1 && <MountainBike rotation={rotation} />}*/}
                                     {signData.walk ? <Text style={styles.plusSign}>+</Text> : <Text style={styles.plusSign}> </Text>}
                                     {signData.walk ? <Walker /> : <NoWalking />}
                                 </View>
